@@ -43,8 +43,17 @@ function logIn(credentials) {
 
 // logIn and signUp functions could be combined into one since the only difference is the url we're sending a request to..
 function signUp(userInfo) {
-	return clientAuth({ method: 'post', url: '/api/users', data: userInfo})
+	return fetch('http://localhost:3001/api/users', {
+		method: 'POST',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		},
+		body: userInfo
+	})
+	//return clientAuth({ method: 'post', url: 'http://localhost:3001/api/users', data: userInfo})
 		.then(res => {
+			console.log('then response',res)
 			const token = res.data.token
 			if(token) {
 				clientAuth.defaults.headers.common.token = setToken(token)
@@ -52,6 +61,9 @@ function signUp(userInfo) {
 			} else {
 				return false
 			}
+		})
+		.catch(err =>{
+			console.log(err)
 		})
 }
 

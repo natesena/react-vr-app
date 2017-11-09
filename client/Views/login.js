@@ -31,7 +31,7 @@ export default class Login extends React.Component{
         "password": this.state.fields.password
       }
       //---------------------------------------------------
-      clientAuth.signUp(fields).then(user => {
+      clientAuth.signUp(JSON.stringify(fields)).then(user => {
         this.setState({ 
           ...this.state,
           fields: { 

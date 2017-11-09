@@ -3,9 +3,10 @@ const
 	express = require('express'),
 	app = express(),
 	logger = require('morgan'),
+	cors = require('cors'),
 	bodyParser = require('body-parser'),
 	mongoose = require('mongoose'),
-	MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/react-express-jwt',
+	MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/react-vr-daddy',
 	PORT = process.env.PORT || 3001,
 	usersRoutes = require('./routes/users.js')
 
@@ -13,6 +14,7 @@ mongoose.connect(MONGODB_URI, (err) => {
 	console.log(err || `Connected to MongoDB.`)
 })
 
+app.use(cors())
 app.use(express.static(`${__dirname}/client/build`))
 app.use(logger('dev'))
 app.use(bodyParser.json())
