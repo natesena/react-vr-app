@@ -8,6 +8,7 @@ import {
   History
 } from 'react-vr';
 import TextInput from '../js/vr_components/textInput.js'
+import clientAuth from '../js/clientAuth.js'
 
 export default class Login extends React.Component{
     state = {
@@ -24,6 +25,20 @@ export default class Login extends React.Component{
       console.log('test passed!')
       //need to create a model
       //run create controller action on user model with {"username": this.state.fields.username,...}
+      var fields = {
+        "username": this.state.fields.username,
+        "email": this.state.fields.email,
+        "password": this.state.fields.password
+      }
+      //---------------------------------------------------
+      clientAuth.signUp(fields).then(user => {
+        this.setState({ fields: { name: '', email: '', password: '' } })
+        if(user) {
+          this.props.onSignUpSuccess(user)
+          this.props.changeView('/test')
+        }
+      })
+      //---------------------------------------------------
     }
   }
 

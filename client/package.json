@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.17.0",
     "electron": "^1.7.9",
     "mongoose": "^4.13.0",
     "ovrui": "~2.0.0",

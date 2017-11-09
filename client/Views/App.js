@@ -16,6 +16,20 @@ export default class App extends React.Component {
     user: null,
     view: 'login'
   }
+  //------------------------------------------------------
+  componentDidMount() {
+		this.setState({ currentUser: clientAuth.getCurrentUser() })
+	}
+
+	onLoginSuccess(user) {
+		this.setState({ currentUser: clientAuth.getCurrentUser() })
+	}
+
+	logOut() {
+		clientAuth.logOut()
+		this.setState({ currentUser: null })
+  }
+  //-----------------------------------------------------
   changeView(link){
     //console.log(link)
     this.setState({
