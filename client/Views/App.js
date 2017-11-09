@@ -8,8 +8,10 @@ import {
   VrButton,
 } from 'react-vr';
 import clientAuth from '../js/clientAuth.js'
+
 import Login from './login.js'
 import Home from './Home.js'
+import AddText from './AddText.js'
 
 export default class App extends React.Component {
   state={
@@ -70,7 +72,7 @@ export default class App extends React.Component {
     })
   }
   render(){
-    console.log("state:", this.state)
+    console.log("new state in APP:", this.state)
    if(this.state.view == 'login'){
      return(
       <Login changeView={this.changeView.bind(this)}/>
@@ -79,6 +81,11 @@ export default class App extends React.Component {
    else if(this.state.view == 'home'){
       return(
       <Home user={this.state.user} changeView={this.changeView.bind(this)}/>
+      )
+    }
+    else if(this.state.view == 'add'){
+      return(
+        <AddText user={this.state.user} changeView={this.changeView.bind(this)}/>
       )
     }
   }
