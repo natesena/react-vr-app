@@ -6,11 +6,19 @@ const clientAuth = axios.create()
 clientAuth.defaults.headers.common.token = getToken()
 
 function getToken() {
-	return AsyncStorage.getItem('token')
+	const token = AsyncStorage.getItem('token')
+	if(token){
+		console.log('token error')
+	}
+	return token
 }
 
 function setToken(token) {
-	AsyncStorage.setItem('token', token)
+	AsyncStorage.setItem('token', token, (err)=>{
+		if(err){
+			console.log(err)
+		}
+	})
 	return token
 }
 
@@ -48,7 +56,7 @@ function signUp(userInfo) {
 }
 
 function logOut() {
-	localStorage.removeItem('token')
+	AsyncStorage.removeItem('token')
 	delete clientAuth.defaults.headers.common.token
 	return true
 }

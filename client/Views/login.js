@@ -32,7 +32,15 @@ export default class Login extends React.Component{
       }
       //---------------------------------------------------
       clientAuth.signUp(fields).then(user => {
-        this.setState({ fields: { name: '', email: '', password: '' } })
+        this.setState({ 
+          ...this.state,
+          fields: { 
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: '' 
+            }
+        })
         if(user) {
           this.props.onSignUpSuccess(user)
           this.props.changeView('/test')
