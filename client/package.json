@@ -7,6 +7,7 @@
     "bundle": "node node_modules/react-vr/scripts/bundle.js",
     "open": "node -e \"require('xopen')('http://localhost:8081/vr/')\"",
     "devtools": "react-devtools",
+    "build": "react-scripts build",
     "test": "jest"
   },
   "dependencies": {
@@ -32,9 +33,5 @@
   "jest": {
     "preset": "react-vr"
   },
-  "proxy": {
-    "/api":{
-      "target": "http://localhost:3001"
-    }
-  }
+  "proxy": "http://localhost:3001"
 }

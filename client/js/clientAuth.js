@@ -6,11 +6,15 @@ const clientAuth = axios.create()
 clientAuth.defaults.headers.common.token = getToken()
 
 function getToken() {
-	const token = AsyncStorage.getItem('token')
-	if(token){
-		console.log('token error in getToken')
-	}
-	return token
+	const token = AsyncStorage.getItem('token', (err, token)=>{
+		console.log('tried to get token: ',token)
+		if(token){
+			console.log('token: ', token)
+			return token
+		}
+		return err
+	})
+	console.log('the promise object returned by Asyncstorage', token)
 }
 
 function setToken(token) {
@@ -24,7 +28,10 @@ function setToken(token) {
 
 function getCurrentUser() {
 	const token = getToken()
-	if(token) return jwtDecode(token)
+	if(token){
+		console.log('token:',token)
+		return jwtDecode(token)
+	} 
 	return null
 }
 
@@ -43,15 +50,15 @@ function logIn(credentials) {
 
 // logIn and signUp functions could be combined into one since the only difference is the url we're sending a request to..
 function signUp(userInfo) {
-	return fetch('http://localhost:3001/api/users', {
-		method: 'POST',
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json'
-		},
-		body: userInfo
-	})
-	//return clientAuth({ method: 'post', url: 'http://localhost:3001/api/users', data: userInfo})
+	// return fetch('/api/users', {
+	// 	method: 'POST',
+	// 	headers: {
+	// 		'Accept': 'application/json',
+	// 		'Content-Type': 'application/json'
+	// 	},
+	// 	body: userInfo
+	// })
+	return clientAuth({ method: 'post', url: '/api/users', data: userInfo})
 		.then(res => {
 			console.log('then response',res)
 			const token = res.data.token
@@ -63,7 +70,7 @@ function signUp(userInfo) {
 			}
 		})
 		.catch(err =>{
-			console.log(err)
+			console.log('we got an err back: ',err)
 		})
 }
 

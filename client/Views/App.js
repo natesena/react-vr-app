@@ -9,46 +9,75 @@ import {
 } from 'react-vr';
 import clientAuth from '../js/clientAuth.js'
 import Login from './login.js'
-import Test from './test.js'
+import Home from './Home.js'
 
 export default class App extends React.Component {
   state={
-    history: [],
+    history: ['/login'],
     user: null,
-    view: 'login'
+    view: '/login'
+  }
+  formatAddress(string){
+    var stringARR = string.split('')
+    var splits = []
+    var currentSplit = ''
+    for(let i = 0; i < stringARR.length; i++){
+      if(stringARR[i] !=='/'){
+        currentSplit+=stringARR[i]
+        if(i == stringARR.length -1){
+          splits.push(currentSplit)
+        }
+      }
+      else{
+        if(currentSplit){
+          splits.push(currentSplit)
+        }
+        currentSplit = ''
+      }
+    }
+    return splits
+  }
+
+  goBack(){
+    //hijack history API
+  }
+  goForwards(){
+    //hijack history API
   }
   //------------------------------------------------------
   componentDidMount() {
-		this.setState({ currentUser: clientAuth.getCurrentUser() })
+		this.setState({ user: clientAuth.getCurrentUser() })
 	}
 
 	onLoginSuccess(user) {
-		this.setState({ currentUser: clientAuth.getCurrentUser() })
+		this.setState({ user: clientAuth.getCurrentUser() })
 	}
 
 	logOut() {
 		clientAuth.logOut()
-		this.setState({ currentUser: null })
+		this.setState({ user: null })
   }
   //-----------------------------------------------------
-  changeView(link){
-    //console.log(link)
+  changeView(link, user){
+    console.log('tried to changeview')
+    console.log(formatAddress(link))
+    //formatAddress()
     this.setState({
-      ...this.state,
+      history: [...this.state.history, link ],
       view: link,
-      //history
+      user: user
     })
   }
   render(){
-    console.log(this.state)
-   if(this.state.view == 'login'){
+    console.log("state:", this.state)
+   if(this.state.view == '/login'){
      return(
       <Login changeView={this.changeView.bind(this)}/>
      )
    }
-   else if(this.state.view == 'test'){
+   else if(this.state.view == '/home'){
       return(
-      <Test/>
+      <Home user={this.state.user} changeView={this.changeView.bind(this)}/>
       )
     }
   }
