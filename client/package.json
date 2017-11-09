@@ -31,5 +31,6 @@
   },
   "jest": {
     "preset": "react-vr"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }

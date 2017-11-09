@@ -8,7 +8,7 @@ clientAuth.defaults.headers.common.token = getToken()
 function getToken() {
 	const token = AsyncStorage.getItem('token')
 	if(token){
-		console.log('token error')
+		console.log('token error in getToken')
 	}
 	return token
 }
