@@ -7,14 +7,14 @@ clientAuth.defaults.headers.common.token = getToken()
 
 function getToken() {
 	const token = AsyncStorage.getItem('token', (err, token)=>{
-		console.log('tried to get token: ',token)
+		//console.log('tried to get token: ',token)
 		if(token){
-			console.log('token: ', token)
+			//console.log('token: ', token)
 			return token
 		}
 		return err
 	})
-	console.log('the promise object returned by Asyncstorage', token)
+	//console.log('the promise object returned by Asyncstorage', token)
 }
 
 function setToken(token) {

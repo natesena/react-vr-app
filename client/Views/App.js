@@ -13,9 +13,9 @@ import Home from './Home.js'
 
 export default class App extends React.Component {
   state={
-    history: ['/login'],
+    history: [['login']],
     user: null,
-    view: '/login'
+    view: 'login'
   }
   formatAddress(string){
     var stringARR = string.split('')
@@ -59,23 +59,24 @@ export default class App extends React.Component {
   }
   //-----------------------------------------------------
   changeView(link, user){
-    console.log('tried to changeview')
-    console.log(formatAddress(link))
+    console.log('tried to change view within APP')
+    var linkSplits = this.formatAddress(link)
+    console.log('linkSplits', linkSplits)
     //formatAddress()
     this.setState({
-      history: [...this.state.history, link ],
-      view: link,
+      history: [...this.state.history, linkSplits ],
+      view: linkSplits[0],
       user: user
     })
   }
   render(){
     console.log("state:", this.state)
-   if(this.state.view == '/login'){
+   if(this.state.view == 'login'){
      return(
       <Login changeView={this.changeView.bind(this)}/>
      )
    }
-   else if(this.state.view == '/home'){
+   else if(this.state.view == 'home'){
       return(
       <Home user={this.state.user} changeView={this.changeView.bind(this)}/>
       )
