@@ -7,6 +7,7 @@ import {
   View,
   VrButton,
 } from 'react-vr';
+import clientAuth from '../js/clientAuth.js'
 import Login from './login.js'
 import Test from './test.js'
 

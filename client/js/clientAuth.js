@@ -1,15 +1,16 @@
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
+import {AsyncStorage} from 'react-vr'
 
 const clientAuth = axios.create()
 clientAuth.defaults.headers.common.token = getToken()
 
 function getToken() {
-	return localStorage.getItem('token')
+	return AsyncStorage.getItem('token')
 }
 
 function setToken(token) {
-	localStorage.setItem('token', token)
+	AsyncStorage.setItem('token', token)
 	return token
 }
 
