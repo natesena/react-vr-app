@@ -17,13 +17,17 @@ export default class Home extends React.Component{
     lasthome: this.props.getHome,
     fields:{
       searchQuery: 'search by username: '
-    }
+    },
+    vrTexts: []
   }
   componentDidMount(){
     axios({method: 'GET', url: `/api/vrTexts/${this.state.lasthome}`})
       .then(res =>{
         console.log('Home Get Requests Response', res)
         //change state, then re render with new ones shown
+        this.setState({
+          vrTexts: res.data
+        }, console.log('Changed Home State to include requested VRTexts', res.data))
       })
   }
   redirectFromHomeView(link){
@@ -45,7 +49,26 @@ export default class Home extends React.Component{
   render() {
     return (
       <View >
-
+        <View>
+        {this.state.vrTexts.map(vrText => {
+          return(
+            <Text
+            style={{
+              backgroundColor: '#777879',
+              fontSize: 0.2,
+              fontWeight: '400',
+              layoutOrigin: [0.5, 0.5],
+              paddingLeft: 0.2,
+              paddingRight: 0.2,
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              transform: [{translate: [vrText.xCoordinate || 0, vrText.yCoordinate || -0.1, vrText.xCoordinate || -3]}],
+            }}>
+            {vrText.text}
+          </Text>
+          )
+        })}
+        </View>
         <Pano source={asset('chess-world.jpg')}/>
             <View>
               <Text

@@ -4,7 +4,6 @@ const
     vrTextsCtrl = require('../controllers/vrTexts.js')
 
 vrTextsRouter.route('/')
-    
     .post(vrTextsCtrl.create)
 
 
