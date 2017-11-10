@@ -32,11 +32,11 @@ import {
      
       //keycode of pressedKey
       var theKeyCode = evt.nativeEvent.inputEvent.keyCode
-        //console.log('keycode', theKeyCode)
+      console.log('textInput keycode:', theKeyCode)
 
       //actual key that was pressed. Could be non-alphanumeric
       var key = evt.nativeEvent.inputEvent.key
-      
+      console.log('textInput key:', key)
       //if key is alphanumeric or @ or .
       if((theKeyCode >= 48 && theKeyCode <= 57)||(theKeyCode >= 65 && theKeyCode <= 90||theKeyCode == 190)){
         if(this.props.type == 'number'){
@@ -47,7 +47,8 @@ import {
             //console.log(this.state.text)
             console.log('key pressed', 'text input state', this.state)
           })
-        } else{
+        } 
+        else{
           this.setState({
             text: this.state.text == this.props.placeHolder? key: this.state.text + key,
           }, ()=>{

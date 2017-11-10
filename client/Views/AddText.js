@@ -48,11 +48,13 @@ export default class AddText extends React.Component{
   }
 
   onInputChange(field, value) {
-    //console.log('field', field)
-    //console.log(typeof field)
+    console.log('add text input change field:', field)
+    console.log('addtext typeof field:',typeof(field))
     const valIsNum = !isNaN(parseInt(value))
     if(valIsNum){
+      console.log('ADD TEXT field text is a number: ', value)
       value = parseInt(value)
+      console.log('ADDText parseint to: ', value)
     }
     //need to make sure inputs are parsed as numbers if they are numbers
     if(field === 'text' || valIsNum && field !== 'text'){
@@ -73,7 +75,8 @@ export default class AddText extends React.Component{
     return (
       <View >
 
-        <Pano source={asset('equirectangular.png')}/>
+        {/* <Pano source={asset('equirectangular.png')}/> */}
+        <Pano source={{uri: 'https://farm8.static.flickr.com/7536/27336477654_8e7c705cf7_b.jpg'}}/>
             <Text
                 style={{
                   backgroundColor: '#777879',

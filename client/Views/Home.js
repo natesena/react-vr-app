@@ -69,8 +69,9 @@ export default class Home extends React.Component{
           )
         })}
         </View>
-        <Pano source={asset('chess-world.jpg')}/>
-            <View>
+        {/* <Pano source={asset('chess-world.jpg')}/> */}
+          <Pano source={{uri:'https://c1.staticflickr.com/4/3161/5864327856_e6c797d614_b.jpg'}}/>
+            
               <Text
                 style={{
                   backgroundColor: '#777879',
@@ -88,7 +89,7 @@ export default class Home extends React.Component{
               <TextInput name="searchQuery" onChange={this.onInputChange.bind(this)} value={this.state.fields.searchQuery} placeHolder={'search by username: '} focused={false} type={'text'} ></TextInput>
               <FocusButton value={'Edit/Delete Your Info'} onFocusButtonClick={this.redirectFromHomeView.bind(this)} viewLink={'/edit'}></FocusButton>
               <FocusButton value={'Add Something'} onFocusButtonClick={this.redirectFromHomeView.bind(this)} viewLink={'/add'}></FocusButton>
-            </View>
+            
       </View>
     );
   }
