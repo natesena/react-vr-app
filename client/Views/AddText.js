@@ -49,8 +49,8 @@ export default class AddText extends React.Component{
   }
 
   onInputChange(field, value) {
-    console.log('field', field)
-    console.log(typeof field)
+    //console.log('field', field)
+    //console.log(typeof field)
     const valIsNum = !isNaN(parseInt(value))
     if(valIsNum){
       value = parseInt(value)
@@ -62,7 +62,7 @@ export default class AddText extends React.Component{
           ...this.state.fields,
           [field]: value
         }
-      }, console.log('addText fields: ',this.state.fields))
+      })
     }
     else{
       console.log('TextInput expected a Number and a String was Sent Instead')
