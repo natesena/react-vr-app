@@ -4,8 +4,8 @@ const
 vrTextSchema = new mongoose.Schema({
     text: String,
     xCoordinate: Number,
-    xCoordinate: Number,
-    xCoordinate: Number,
+    yCoordinate: Number,
+    zCoordinate: Number,
     homeID: String,
     posterID: String
 })

@@ -12,6 +12,16 @@ import TextInput from '../js/vr_components/textInput.js'
 
 import axios from 'axios'
 
+var data = {
+
+}
+//update data to be the  id of the last home visited
+axios({method: 'GET', url: '/api/vrTexts', data: data})
+.then(res =>{
+  console.log('Home Get Requests Response', res)
+})
+
+
 export default class Home extends React.Component{
   state={
     fields:{

@@ -11,11 +11,9 @@ import {
 import TextInput from '../js/vr_components/textInput.js'
 import axios from 'axios'
 
-//const vrTextReq = axios.create()
-
-
 export default class AddText extends React.Component{
   state = {
+    //lasthome: this.props.getHome,
     fields: {
       text: 'Text: ',
       translateX: 'X Coordinate: ',
@@ -34,16 +32,19 @@ export default class AddText extends React.Component{
    }
    //send post request with vrText info
    //need current id of home we are on from state
-  //  var fields = {
-  //    ...this.state.fields,
-  //    homeId: ,
-  //    posterID: this.props.user._id,
-  //  }
-   //axios({method: 'POST', url: '/api/vrTexts', data: this.state.fields})
-   //.then
+   var fields = {
+     ...this.state.fields,
+     homeID: this.state.lasthome,
+     posterID: this.props.user._id,
+   }
+   axios({method: 'POST', url: '/api/vrTexts', data: this.state.fields})
+      .then(res =>{
+        console.log('ADD Text Post Response', res)
+        //this is the wrong route currently
+        //should be the id of the last home visited
+        this.props.changeView(`/home/${this.props.user._id}`, this.props.user)
+      })
    //redirect to home where we posted it
-
-
   }
 
   onInputChange(field, value) {
