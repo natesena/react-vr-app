@@ -73,7 +73,34 @@ export default class AddText extends React.Component{
       <View >
 
         <Pano source={asset('equirectangular.png')}/>
-        
+            <Text
+                style={{
+                  backgroundColor: '#777879',
+                  fontSize: 0.2,
+                  fontWeight: '400',
+                  layoutOrigin: [0.5, 0.5],
+                  paddingLeft: 0.2,
+                  paddingRight: 0.2,
+                  textAlign: 'center',
+                  textAlignVertical: 'center',
+                  transform: [{translate: [0, 0, -3]}],
+                }}>
+                VR Text Submission
+            </Text>
+            <Text
+                style={{
+                  backgroundColor: '#777879',
+                  fontSize: 0.2,
+                  fontWeight: '400',
+                  layoutOrigin: [0.5, 0.5],
+                  paddingLeft: 0.2,
+                  paddingRight: 0.2,
+                  textAlign: 'center',
+                  textAlignVertical: 'center',
+                  transform: [{translate: [0, 0, -3]}],
+                }}>
+                It is best to use numbers less than 20
+            </Text>
             <TextInput name="text" onChange={this.onInputChange.bind(this)} value={this.state.fields.text} placeHolder={'Text: '} focused={false} type={'text'} ></TextInput>
             <TextInput name="translateX" onChange={this.onInputChange.bind(this)} value={this.state.fields.translateX} placeHolder={'X Coordinate: '} focused={false} type={'number'} ></TextInput>
             <TextInput name="translateY" onChange={this.onInputChange.bind(this)} value={this.state.fields.translateY} placeHolder={'Y Coordinate: '} focused={false} type={'number'} ></TextInput>
