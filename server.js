@@ -9,6 +9,7 @@ const
 	MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/react-vr-daddy',
 	PORT = process.env.PORT || 3001,
 	usersRoutes = require('./routes/users.js')
+	vrTextsRoutes = require('./routes/vrTexts.js')
 
 mongoose.connect(MONGODB_URI, (err) => {
 	console.log(err || `Connected to MongoDB.`)
@@ -24,6 +25,7 @@ app.get('/api', (req, res) => {
 })
 
 app.use('/api/users', usersRoutes)
+app.use('/api/vrTexts', vrTextsRoutes)
 
 app.use('*', (req, res) => {
 	console.log('from server start route')

@@ -8,17 +8,29 @@ import {
   History
 } from 'react-vr';
 import FocusButton from '../js/vr_components/focusButton.js'
+import TextInput from '../js/vr_components/textInput.js'
 
 export default class Home extends React.Component{
   state={
-    
+    fields:{
+      searchQuery: 'search by username: '
+    }
   }
   redirectFromHomeView(link){
   console.log('tried to redirect from home view')
   console.log('Home Button redirect location link:', link||'no link provided')
+  //want to provide link of this particular home which should be the id of the home owner
   this.props.changeView(link + '/'+ this.props.user._id, this.props.user)
   }
   
+  onInputChange(field, value) {
+    this.setState({
+      fields: {
+        ...this.state.fields,
+        [field]: value
+      }
+    })
+  }
     
   render() {
     return (
@@ -40,6 +52,7 @@ export default class Home extends React.Component{
                 }}>
                 Welcome Home {this.props.user.username? this.props.user.username : 'no username'}
               </Text>
+              <TextInput name="searchBar" onChange={this.onInputChange.bind(this)} value={this.state.fields.searchQuery} placeHolder={'search by username: '} focused={false} type={'text'} ></TextInput>
               <FocusButton value={'Edit/Delete Your Info'} onFocusButtonClick={this.redirectFromHomeView.bind(this)} viewLink={'/edit'}></FocusButton>
               <FocusButton value={'Add Something'} onFocusButtonClick={this.redirectFromHomeView.bind(this)} viewLink={'/add'}></FocusButton>
             </View>

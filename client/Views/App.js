@@ -16,6 +16,7 @@ import AddText from './AddText.js'
 export default class App extends React.Component {
   state={
     history: [['login']],
+    currentHistoryIndex: 0,
     user: null,
     view: 'login'
   }
@@ -59,14 +60,18 @@ export default class App extends React.Component {
 		clientAuth.logOut()
 		this.setState({ user: null })
   }
+  getLastHome(){
+
+  }
   //-----------------------------------------------------
   changeView(link, user){
     console.log('tried to change view within APP')
     var linkSplits = this.formatAddress(link)
     console.log('linkSplits', linkSplits)
-    //formatAddress()
+    //need to handle currentHistoryIndex changing with backwards, forwards
     this.setState({
       history: [...this.state.history, linkSplits ],
+      currentHistoryIndex: this.state.currentHistoryIndex + 1,
       view: linkSplits[0],
       user: user
     })
@@ -85,7 +90,7 @@ export default class App extends React.Component {
     }
     else if(this.state.view == 'add'){
       return(
-        <AddText user={this.state.user} changeView={this.changeView.bind(this)}/>
+        <AddText user={this.state.user} changeView={this.changeView.bind(this)} />
       )
     }
   }

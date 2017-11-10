@@ -7,7 +7,10 @@ import {
   VrButton,
   History
 } from 'react-vr';
+//import axios from 'axios'//---------------------------
 import TextInput from '../js/vr_components/textInput.js'
+
+//const vrTextReq = axios.create()
 
 
 export default class AddText extends React.Component{
@@ -21,7 +24,16 @@ export default class AddText extends React.Component{
   }
   addTextSubmit(){
    console.log('Addtext: tried to submit')
-   console.log(this.state.fields)
+   console.log('addtext submit fields',this.state.fields)
+   //send post request with vrText info
+   //need current id of home we are on from state
+  //  var fields = {
+  //    ...this.state.fields,
+  //    homeId: ,
+  //    posterID: this.props.user._id,
+  //  }
+   //vrTextReq({method: 'POST', url: '/api/vrTexts', data: this.state.fields})
+
   }
 
   onInputChange(field, value) {

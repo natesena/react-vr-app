@@ -42,7 +42,7 @@ export default class Login extends React.Component{
         // })
         if(user) {
           //this.props.onSignUpSuccess(user)
-          console.log('changing view within lign.js submit')
+          console.log('changing view within login.js submit')
           this.props.changeView(`/home/${user._id}`, user)
         }
       })
