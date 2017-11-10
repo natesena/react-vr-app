@@ -61,14 +61,14 @@ export default class App extends React.Component {
 		this.setState({ user: null })
   }
   getLastHome(){
-    for(let i = this.state.fields.history.length - 1; i >= 0; i--){
-      if(this.state.fields.history[i][0] == 'home'){
-        console.log(this.state.fields.history[i][1])
-        return this.state.fields.history[i][1]
+    for(let i = this.state.history.length - 1; i >= 0; i--){
+      if(this.state.history[i][0] == 'home'){
+        console.log("App Last Home",this.state.history[i][1])
+        return this.state.history[i][1]
       }
       else{
         console.log('APP,getLastHome, no last user was found')
-        return this.state.user._id
+        return this.state.user._id 
       }
     }
   }
@@ -86,6 +86,11 @@ export default class App extends React.Component {
     })
   }
   render(){
+    var lastHome
+    if(this.state.user){
+      lastHome = this.getLastHome()
+    }
+    console.log(lastHome) 
     console.log("new state in APP:", this.state)
    if(this.state.view == 'login'){
      return(
@@ -99,7 +104,7 @@ export default class App extends React.Component {
     }
     else if(this.state.view == 'add'){
       return(
-        <AddText user={this.state.user} changeView={this.changeView.bind(this)} getHome={this.getLastHome.bind(this)}/>
+        <AddText user={this.state.user} changeView={this.changeView.bind(this)} getHome={lastHome}/>
       )
     }
   }

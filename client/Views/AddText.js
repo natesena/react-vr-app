@@ -13,7 +13,7 @@ import axios from 'axios'
 
 export default class AddText extends React.Component{
   state = {
-    //lasthome: this.props.getHome,
+    lasthome: this.props.getHome,
     fields: {
       text: 'Text: ',
       translateX: 'X Coordinate: ',
@@ -37,12 +37,12 @@ export default class AddText extends React.Component{
      homeID: this.state.lasthome,
      posterID: this.props.user._id,
    }
-   axios({method: 'POST', url: '/api/vrTexts', data: this.state.fields})
+   axios({method: 'POST', url: '/api/vrTexts', data: fields})
       .then(res =>{
         console.log('ADD Text Post Response', res)
         //this is the wrong route currently
         //should be the id of the last home visited
-        this.props.changeView(`/home/${this.props.user._id}`, this.props.user)
+        this.props.changeView(`/home/${this.state.lasthome}`, this.props.user)
       })
    //redirect to home where we posted it
   }
