@@ -19,8 +19,9 @@ export default class AddText extends React.Component{
       translateZ: 'Z Coordinate: '
     }
   }
-  submit(){
+  addTextSubmit(){
    console.log('Addtext: tried to submit')
+   console.log(this.state.fields)
   }
 
   onInputChange(field, value) {
@@ -29,7 +30,7 @@ export default class AddText extends React.Component{
         ...this.state.fields,
         [field]: value
       }
-    })
+    }, console.log(this.state.fields))
   }
   
   render() {
@@ -43,7 +44,7 @@ export default class AddText extends React.Component{
             <TextInput name="translateX" onChange={this.onInputChange.bind(this)} value={this.state.fields.translateX} placeHolder={'X Coordinate: '} focused={false} type={'text'} ></TextInput>
             <TextInput name="translateY" onChange={this.onInputChange.bind(this)} value={this.state.fields.translateY} placeHolder={'Y Coordinate: '} focused={false} type={'text'} ></TextInput>
             <TextInput name="translateZ" onChange={this.onInputChange.bind(this)} value={this.state.fields.translateZ} placeHolder={'Z Coordinate: '} focused={false} type={'text'} ></TextInput>
-            <VrButton onClick={this.submit.bind(this)}>
+            <VrButton onClick={this.addTextSubmit.bind(this)}>
               <Text
                 style={{
                   backgroundColor: '#777879',
