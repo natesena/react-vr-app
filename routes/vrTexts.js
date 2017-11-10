@@ -4,12 +4,12 @@ const
     vrTextsCtrl = require('../controllers/vrTexts.js')
 
 vrTextsRouter.route('/')
-    .get(vrTextsCtrl.index)
+    
     .post(vrTextsCtrl.create)
 
 
 vrTextsRouter.route('/:id')
-    .get(vrTextsCtrl.show)
+    .get(vrTextsCtrl.index)
     .patch(vrTextsCtrl.update)
     .delete(vrTextsCtrl.destroy)
 

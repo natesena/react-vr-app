@@ -39,6 +39,7 @@ export default class AddText extends React.Component{
    }
    axios({method: 'POST', url: '/api/vrTexts', data: fields})
       .then(res =>{
+        console.log('Fields from AddText Post Request', fields)
         console.log('ADD Text Post Response', res)
         //this is the wrong route currently
         //should be the id of the last home visited

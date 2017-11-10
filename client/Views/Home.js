@@ -12,21 +12,19 @@ import TextInput from '../js/vr_components/textInput.js'
 
 import axios from 'axios'
 
-var data = {
-
-}
-//update data to be the  id of the last home visited
-axios({method: 'GET', url: '/api/vrTexts', data: data})
-.then(res =>{
-  console.log('Home Get Requests Response', res)
-})
-
-
 export default class Home extends React.Component{
   state={
+    lasthome: this.props.getHome,
     fields:{
       searchQuery: 'search by username: '
     }
+  }
+  componentDidMount(){
+    axios({method: 'GET', url: `/api/vrTexts/${this.state.lasthome}`})
+      .then(res =>{
+        console.log('Home Get Requests Response', res)
+        //change state, then re render with new ones shown
+      })
   }
   redirectFromHomeView(link){
   console.log('tried to redirect from home view')

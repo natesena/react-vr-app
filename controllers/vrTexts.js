@@ -5,8 +5,11 @@ module.exports = {
 	// list all 
 	index: (req, res) => {
 		console.log('addVr Get Request', req)
-		vrText.find({}, (err, users) => {
-			res.json(users)
+		vrText.find({homeID: req.params.id}, (err, vrtexts) => {
+			if(err) console.log(err)
+			else{
+				res.json(vrtexts)
+			}
 		})
 	},
 
