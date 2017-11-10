@@ -29,6 +29,7 @@ import {
       console.log('clicked textInput')
     }
     keyPressed(evt){
+     
       //keycode of pressedKey
       var theKeyCode = evt.nativeEvent.inputEvent.keyCode
         //console.log('keycode', theKeyCode)
@@ -37,18 +38,29 @@ import {
       var key = evt.nativeEvent.inputEvent.key
       
       //if key is alphanumeric or @ or .
-      if((theKeyCode >= 48 && theKeyCode <= 57)||(theKeyCode >= 65 && theKeyCode <= 90||theKeyCode == 190)){  
-        this.setState({
-          text: this.state.text == this.props.placeHolder? key: this.state.text + key,
-        }, ()=>{
-          this.props.onChange(this.props.name, this.state.text)
-          //console.log(this.state.text)
-        })
+      if((theKeyCode >= 48 && theKeyCode <= 57)||(theKeyCode >= 65 && theKeyCode <= 90||theKeyCode == 190)){
+        if(this.props.type == 'number'){
+          this.setState({
+            text: this.state.text == this.props.placeHolder? key: parseInt(this.state.text + key),
+          }, ()=>{
+            this.props.onChange(this.props.name, this.state.text)
+            //console.log(this.state.text)
+            console.log('key pressed', 'text input state', this.state)
+          })
+        } else{
+          this.setState({
+            text: this.state.text == this.props.placeHolder? key: this.state.text + key,
+          }, ()=>{
+            this.props.onChange(this.props.name, this.state.text)
+            //console.log(this.state.text)
+            console.log('key pressed', 'text input state', this.state)
+          })
+        } 
       }
 
       //if delete key was pressed
       if(theKeyCode == 8){
-        var currentText = this.state.text.split('')
+        var currentText = this.state.text.toString().split('')
         //delete letter from array
         currentText.pop()
         var joinedLess = currentText.join('')

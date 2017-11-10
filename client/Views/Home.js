@@ -10,6 +10,8 @@ import {
 import FocusButton from '../js/vr_components/focusButton.js'
 import TextInput from '../js/vr_components/textInput.js'
 
+import axios from 'axios'
+
 export default class Home extends React.Component{
   state={
     fields:{
