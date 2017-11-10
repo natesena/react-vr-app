@@ -29,7 +29,7 @@ import {
       console.log('clicked textInput')
     }
     keyPressed(evt){
-     
+      console.log('-------------------------------------newkeypressed--------------------------------------')
       //keycode of pressedKey
       var theKeyCode = evt.nativeEvent.inputEvent.keyCode
       console.log('textInput keycode:', theKeyCode)

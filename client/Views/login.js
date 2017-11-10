@@ -83,7 +83,7 @@ export default class Login extends React.Component{
                   textAlignVertical: 'center',
                   transform: [{translate: [0, 0, -3]}],
                 }}>
-                Submit
+                Submitter
               </Text>
             </VrButton>
       </View>
