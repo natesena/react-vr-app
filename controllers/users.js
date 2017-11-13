@@ -14,7 +14,8 @@ module.exports = {
 	show: (req, res) => {
 		console.log("Current User:")
 		console.log(req.user)
-		User.findById(req.params.id, (err, user) => {
+		console.log('show request params', req.params)
+		User.find({username: req.params.id}, (err, user) => {
 			res.json(user)
 		})
 	},

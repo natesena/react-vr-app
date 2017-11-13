@@ -15,8 +15,8 @@ module.exports = {
 
 	// get one user
 	show: (req, res) => {
-		console.log("Current User:")
-		console.log(req.user)
+		console.log("Current User:", req.user)
+		
 		vrText.findById(req.params.id, (err, vrtext) => {
 			res.json(vrtext)
 		})

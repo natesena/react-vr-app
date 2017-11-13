@@ -45,6 +45,16 @@ export default class Home extends React.Component{
       }
     })
   }
+
+  usernameSubmit(){
+    console.log('tried to username submit')
+    //post arequest looking for if there is someone in the database witht that username
+    //could throw error if we know the query cant be a username
+    axios({method: 'GET', url: `/api/users/${this.state.fields.searchQuery}`})
+    .then(res=>{
+      console.log('username submission response: ',res)
+    })
+  }
     
   render() {
     return (
@@ -82,13 +92,29 @@ export default class Home extends React.Component{
                   paddingRight: 0.2,
                   textAlign: 'center',
                   textAlignVertical: 'center',
-                  transform: [{translate: [0, -0.1, -3]}],
+                  transform: [{translate: [0, 0, -3]}],
                 }}>
                 Welcome Home {this.props.user.username? this.props.user.username : 'no username'}
               </Text>
               </View>
               <View>
               <TextInput name="searchQuery" onChange={this.onInputChange.bind(this)} value={this.state.fields.searchQuery} placeHolder={'search by username: '} focused={false} type={'text'} ></TextInput>
+              <VrButton onClick={this.usernameSubmit.bind(this)}>
+                  <Text
+                    style={{
+                      backgroundColor: '#777879',
+                      fontSize: 0.2,
+                      fontWeight: '400',
+                      layoutOrigin: [0.5, 0.5],
+                      paddingLeft: 0.2,
+                      paddingRight: 0.2,
+                      textAlign: 'center',
+                      textAlignVertical: 'center',
+                      transform: [{translate: [0, 0, -3]}],
+                    }}>
+                    Submit
+                  </Text>
+              </VrButton>
               <FocusButton value={'Edit/Delete Your Info'} onFocusButtonClick={this.redirectFromHomeView.bind(this)} viewLink={'/edit'}></FocusButton>
               <FocusButton value={'Add Something'} onFocusButtonClick={this.redirectFromHomeView.bind(this)} viewLink={'/add'}></FocusButton>
               </View>
