@@ -63,6 +63,7 @@ export default class Login extends React.Component{
         if(user) {
           //this.props.onSignUpSuccess(user)
           console.log('changing view within login.js submit')
+          //the user we would typically pass is the viewOwner
           this.props.changeView(`/home/${user._id}`, user)
         }
       })

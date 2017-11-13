@@ -18,7 +18,8 @@ export default class App extends React.Component {
     history: [['login']],
     currentHistoryIndex: 0,
     user: null,
-    view: 'login'
+    view: 'login',
+    viewOwner: null,
   }
   formatAddress(string){
     var stringARR = string.split('')
@@ -49,7 +50,9 @@ export default class App extends React.Component {
   }
   //------------------------------------------------------
   componentDidMount() {
-		this.setState({ user: clientAuth.getCurrentUser() })
+		this.setState({ 
+      user: clientAuth.getCurrentUser() 
+    })
 	}
 
 	onLoginSuccess(user) {
@@ -60,7 +63,9 @@ export default class App extends React.Component {
 		clientAuth.logOut()
 		this.setState({ user: null })
   }
+  //should return id of last home we were at
   getLastHome(){
+    
     for(let i = this.state.history.length - 1; i >= 0; i--){
       if(this.state.history[i][0] == 'home'){
         console.log("App Last Home",this.state.history[i][1])
@@ -73,20 +78,27 @@ export default class App extends React.Component {
     }
   }
   //-----------------------------------------------------
-  changeView(link, user){
+  changeView(link, newViewOwner){
+    //thenewViewOwner is the user who owns the view we are navigating to
+    //if a user just signed up, the new view owner is also the owner 
     console.log('tried to change view within APP')
     var linkSplits = this.formatAddress(link)
     console.log('linkSplits', linkSplits)
     //need to handle currentHistoryIndex changing with backwards, forwards
+    //if there is no user set, then we propbably just signed in and the newviewowner passed in would be the new user
     this.setState({
       history: [...this.state.history, linkSplits ],
       currentHistoryIndex: this.state.currentHistoryIndex + 1,
       view: linkSplits[0],
-      user: user
+      user: this.state.user? this.state.user: newViewOwner,
+      viewOwner: newViewOwner,
     })
+    //if navigating to a new user's profile
   }
   render(){
+    //should i be getting the last home or last homeowner
     var lastHome
+    //forget what error was thrown when not written this way
     if(this.state.user){
       lastHome = this.getLastHome()
     }
@@ -99,7 +111,7 @@ export default class App extends React.Component {
    }
    else if(this.state.view == 'home'){
       return(
-      <Home user={this.state.user} changeView={this.changeView.bind(this)} getHome={lastHome}/>
+      <Home user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/>
       )
     }
     else if(this.state.view == 'add'){

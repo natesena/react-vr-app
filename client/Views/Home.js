@@ -53,6 +53,9 @@ export default class Home extends React.Component{
     axios({method: 'GET', url: `/api/users/${this.state.fields.searchQuery}`})
     .then(res=>{
       console.log('username submission response: ',res)
+      //want to navigate to /home/${res.data._id}
+      console.log('username submit link', '/home/'+res.data[0]._id)
+      this.props.changeView('/home/'+res.data[0]._id, res.data[0])
     })
   }
     
@@ -94,7 +97,7 @@ export default class Home extends React.Component{
                   textAlignVertical: 'center',
                   transform: [{translate: [0, 0, -3]}],
                 }}>
-                Welcome Home {this.props.user.username? this.props.user.username : 'no username'}
+                {this.props.user == this.props.homeOwner? `Welcome home ${this.props.user.username}`: `Welcome to ${this.props.homeOwner.username}'s home`}
               </Text>
               </View>
               <View>
