@@ -16,37 +16,69 @@ export default class Login extends React.Component{
       username: 'username: ',
       email: 'email: ',
       password: 'password: ',
-      confirmPassword: 'confirm password: '
+      confirmPassword: 'confirm password: ',
+      passwordStars: 'password: ',
+      confirmPasswordStars: 'confirm password: '
     }
+  }
+  usernamePasses(){
+    var username = this.state.fields.username
+    var usernamePassesTest = true
+    //username must be alphanumeric with no spaces
+    for(let i = 0; i < username.length; i++){
+      if (!(username.charCodeAt(i) > 47 && username.charCodeAt(i) < 58) && // numeric (0-9)
+        !(username.charCodeAt(i) > 64 && username.charCodeAt(i) < 91) && // upper alpha (A-Z)
+        !(username.charCodeAt(i) > 96 && username.charCodeAt(i) < 123)) { // lower alpha (a-z)
+        usernamePassesTest = false
+        return usernamePassesTest
+      }
+    }
+    return usernamePassesTest
+  }
+  loginFormIsFilledOut(){
+    if(this.state.fields.username !== 'username: ' && this.state.fields.email !== 'email: ' && this.state.fields.password !== 'password: '&&this.state.fields.confirmPassword !== 'confirm password: '){
+      return true
+    }
+    return false
+  }
+  emailPasses(){
+    
   }
   submit(){
     //console.log('Tried to submit')
-    if(this.state.fields.username !== 'username: ' && this.state.fields.email !== 'email: ' && this.state.fields.password !== 'password: '&&this.state.fields.confirmPassword !== 'confirm password: '){
-      //console.log('test passed!')
-      var fields = {
-        "username": this.state.fields.username,
-        "email": this.state.fields.email,
-        "password": this.state.fields.password
-      }
-      //---------------------------------------------------
-      clientAuth.signUp(fields).then(user => {
-        console.log('user', user)
-        // this.setState({ 
-        //   ...this.state,
-        //   fields: { 
-        //     username: '',
-        //     email: '',
-        //     password: '',
-        //     confirmPassword: '' 
-        //     }
-        // })
-        if(user) {
-          //this.props.onSignUpSuccess(user)
-          console.log('changing view within login.js submit')
-          this.props.changeView(`/home/${user._id}`, user)
+
+    //if something was typed into every field 
+    if(this.loginFormIsFilledOut()){
+      //console.log('login signup, no query is left blank')
+
+      //if password does not pass
+      if(this.usernamePasses()){
+        if(this.state.fields.password == this.state.fields.confirmPassword){
+          //console.log(login signup, password and password confirmation match)
+          var fields = {
+            "username": this.state.fields.username,
+            "email": this.state.fields.email,
+            "password": this.state.fields.password
+          }
+          clientAuth.signUp(fields).then(user => {
+            console.log('user', user)
+            if(user) {
+              //this.props.onSignUpSuccess(user)
+              console.log('changing view within login.js submit')
+              this.props.changeView(`/home/${user._id}`, user)
+            }
+          })
         }
-      })
-      //---------------------------------------------------
+        else{
+          console.log('make sure your password fields match!')
+        }
+      }//username contains non alphanumeric
+      else{
+        console.log('usernames must only contain numbers and letters')
+      }
+    }//login form is not filled out
+    else{
+      console.log("don't forget to fill out every field")
     }
   }
 
@@ -83,7 +115,7 @@ export default class Login extends React.Component{
                   textAlignVertical: 'center',
                   transform: [{translate: [0, 0, -3]}],
                 }}>
-                Submitter
+                Submit
               </Text>
             </VrButton>
       </View>

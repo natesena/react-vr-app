@@ -37,30 +37,9 @@ import {
       //actual key that was pressed. Could be non-alphanumeric
       var key = evt.nativeEvent.inputEvent.key
       console.log('textInput key:', key)
-      //if key is alphanumeric or @ or .
-      if((theKeyCode >= 48 && theKeyCode <= 57)||(theKeyCode >= 65 && theKeyCode <= 90||theKeyCode == 190)){
-        if(this.props.type == 'number'){
-          this.setState({
-            text: this.state.text == this.props.placeHolder? key: parseInt(this.state.text + key),
-          }, ()=>{
-            this.props.onChange(this.props.name, this.state.text)
-            //console.log(this.state.text)
-            console.log('key pressed', 'text input state', this.state)
-          })
-        } 
-        else{
-          this.setState({
-            text: this.state.text == this.props.placeHolder? key: this.state.text + key,
-          }, ()=>{
-            this.props.onChange(this.props.name, this.state.text)
-            //console.log(this.state.text)
-            console.log('key pressed', 'text input state', this.state)
-          })
-        } 
-      }
 
-      //if delete key was pressed
-      if(theKeyCode == 8){
+       //if delete key was pressed
+       if(theKeyCode == 8){
         var currentText = this.state.text.toString().split('')
         //delete letter from array
         currentText.pop()
@@ -75,7 +54,22 @@ import {
           this.props.onChange(this.props.name, this.state.text)
         })
       }
-      
+      else{
+        //let any key be added shown
+        //console.log('textInput, formatting key press as normal text')
+        //if key is not shift
+           if(theKeyCode !== 16){
+             //if password a star should be shown but login.js should receive true text
+             this.setState({
+               text: this.state.text == this.props.placeHolder? key: this.state.text + key,
+              }, ()=>{
+               this.props.onChange(this.props.name, this.state.text)
+               //console.log(this.state.text)
+               console.log('key pressed', 'text input state', this.state)
+              })
+           }
+        
+      }
     }
     
     render() {
