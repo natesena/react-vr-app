@@ -115,7 +115,7 @@ export default class App extends React.Component {
     }
     else if(this.state.view == 'add'){
       return(
-        <AddText user={this.state.user} changeView={this.changeView.bind(this)} getHome={lastHome}/>
+        <AddText user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/>
       )
     }
   }

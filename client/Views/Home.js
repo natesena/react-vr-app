@@ -36,10 +36,10 @@ export default class Home extends React.Component{
     })
   }
   redirectFromHomeView(link){
-  console.log('tried to redirect from home view')
-  console.log('Home Button redirect location link:', link||'no link provided')
-  //want to provide link of this particular home which should be the id of the home owner
-  this.props.changeView(link + '/'+ this.props.user._id, this.props.user)
+    console.log('tried to redirect from home view')
+    console.log('Home Button redirect location link:', link||'no link provided')
+    //want to provide link of this particular home which should be the id of the home owner
+    this.props.changeView(link + '/'+ this.props.user._id, this.props.homeOwner)
   }
   
   onInputChange(field, value) {

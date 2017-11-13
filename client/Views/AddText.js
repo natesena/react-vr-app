@@ -42,8 +42,8 @@ export default class AddText extends React.Component{
       .then(res =>{
         //console.log('Fields from AddText Post Request', fields)
         //console.log('ADD Text Post Response', res)
-        //redirect to home where we posted it
-        this.props.changeView(`/home/${this.state.lasthome}`, this.props.user)
+        //redirect to home where we posted it, with last homeowner owning view
+        this.props.changeView(`/home/${this.state.lasthome}`, this.props.homeOwner)
       })
   
   }
