@@ -46,13 +46,12 @@ export default class Login extends React.Component{
     
   }
   submit(){
+      //console.log('Tried to submit')
     var formIsFilled = this.loginFormIsFilledOut()
-    var userNameIsAlpanumeric = this.loginFormIsFilledOut()
+    var userNameIsAlphanumeric = this.usernamePasses()
     var passwordsMatch = (this.state.fields.password == this.state.fields.confirmPassword)
-    //console.log('Tried to submit')
-    //if something was typed into every field 
    
-    if(formIsFilled && userNameIsAlpanumeric && passwordsMatch){
+    if(formIsFilled && userNameIsAlphanumeric && passwordsMatch){
       var fields = {
         "username": this.state.fields.username,
         "email": this.state.fields.email,
@@ -69,12 +68,19 @@ export default class Login extends React.Component{
     }
     else{
       //throw error for each error
+      var newErrors = []
+      formIsFilled? null: newErrors.push('fill out the whole form')
+      userNameIsAlphanumeric? null: newErrors.push('username is not alphanumeric')
+      passwordsMatch? null: newErrors.push('paswords do not match')
+      if(newErrors){
+        this.throwError(newErrors)
+      }
       
     }
   }
-  throwError(error){
+  throwError(newerrors){
     this.setState({
-      errors: [...this.state.errors, error]
+      errors: [...newerrors]
     })
   }
   onInputChange(field, value) {
