@@ -27,11 +27,12 @@ export default class Login extends React.Component{
     var usernamePassesTest = true
     //username must be alphanumeric with no spaces
     for(let i = 0; i < username.length; i++){
+      console.log('username.charCodeAt(i): ', username.charCodeAt(i))
       if (!(username.charCodeAt(i) > 47 && username.charCodeAt(i) < 58) && // numeric (0-9)
         !(username.charCodeAt(i) > 64 && username.charCodeAt(i) < 91) && // upper alpha (A-Z)
         !(username.charCodeAt(i) > 96 && username.charCodeAt(i) < 123)) { // lower alpha (a-z)
         usernamePassesTest = false
-        return usernamePassesTest
+        console.log('login username check contains non alphanumeric')
       }
     }
     return usernamePassesTest
@@ -84,13 +85,20 @@ export default class Login extends React.Component{
     })
   }
   onInputChange(field, value) {
-    //should have errors thrown here as users are signing up
+    //throw error if value is non alphanumeric
+    console.log('login on inputchange field and value: ', field, value)
+   
     this.setState({
       fields: {
         ...this.state.fields,
         [field]: value
       }
+    }, ()=>{
+      if(field == 'username'){
+        this.usernamePasses()? this.throwError([]): this.throwError(['username is not alphanumeric'])
+      }
     })
+
   }
   
   render() {
