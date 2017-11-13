@@ -29,14 +29,14 @@ import {
       console.log('clicked textInput')
     }
     keyPressed(evt){
-      console.log('-------------------------------------newkeypressed--------------------------------------')
+      //console.log('-------------------------------------newkeypressed--------------------------------------')
       //keycode of pressedKey
       var theKeyCode = evt.nativeEvent.inputEvent.keyCode
-      console.log('textInput keycode:', theKeyCode)
+      //console.log('textInput keycode:', theKeyCode)
 
       //actual key that was pressed. Could be non-alphanumeric
       var key = evt.nativeEvent.inputEvent.key
-      console.log('textInput key:', key)
+      //console.log('textInput key:', key)
 
        //if delete key was pressed
        if(theKeyCode == 8){

@@ -65,17 +65,16 @@ export default class App extends React.Component {
   }
   //should return id of last home we were at
   getLastHome(){
-    
     for(let i = this.state.history.length - 1; i >= 0; i--){
+      console.log('APP, getlasthome history check:', this.state.history[i])
       if(this.state.history[i][0] == 'home'){
         console.log("App Last Home",this.state.history[i][1])
         return this.state.history[i][1]
       }
-      else{
-        console.log('APP,getLastHome, no last user was found')
-        return this.state.user._id 
-      }
     }
+    console.log('APP,getLastHome, no last user was found')
+    return this.state.user._id 
+    
   }
   //-----------------------------------------------------
   changeView(link, newViewOwner){
@@ -98,7 +97,7 @@ export default class App extends React.Component {
   render(){
     //should i be getting the last home or last homeowner
     var lastHome
-    //forget what error was thrown when not written this way
+    //when you begin, user is null, so this is for error handling
     if(this.state.user){
       lastHome = this.getLastHome()
     }

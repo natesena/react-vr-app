@@ -22,14 +22,14 @@ export default class AddText extends React.Component{
     }
   }
   addTextSubmit(){
-   console.log('Addtext: tried to submit')
-   console.log('addtext submit fields',this.state.fields)
+   //console.log('Addtext: tried to submit')
+   //console.log('addtext submit fields',this.state.fields)
    if(typeof(this.state.fields.translateX) !== 'number' || typeof(this.state.fields.translateY) !== 'number'|| typeof(this.state.fields.translateZ) !== 'number') {
      console.log('One or more coordinate inputs are not of type number')
    }
-   else{
-     console.log('addTextSubmits input tests passed')
-   }
+  
+   //console.log('addTextSubmits input tests passed')
+   
    //send post request with vrText info
    //need current id of home we are on from state
    var fields = {
@@ -37,6 +37,7 @@ export default class AddText extends React.Component{
      homeID: this.state.lasthome,
      posterID: this.props.user._id,
    }
+   console.log('ADDTEXT posting new text with this data', fields)
    axios({method: 'POST', url: '/api/vrTexts', data: fields})
       .then(res =>{
         //console.log('Fields from AddText Post Request', fields)
@@ -48,8 +49,8 @@ export default class AddText extends React.Component{
   }
 
   onInputChange(field, value) {
-    console.log('add text input change field:', field)
-    console.log('addtext typeof field:',typeof(field))
+    //console.log('add text input change field:', field)
+    //console.log('addtext typeof field:',typeof(field))
     const valIsNum = !isNaN(parseInt(value))
     if(valIsNum){
       console.log('ADD TEXT field text is a number: ', value)

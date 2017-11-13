@@ -21,14 +21,19 @@ export default class Home extends React.Component{
     vrTexts: []
   }
   componentDidMount(){
-    axios({method: 'GET', url: `/api/vrTexts/${this.state.lasthome}`})
-      .then(res =>{
-        console.log('Home Get Requests Response', res)
-        //change state, then re render with new ones shown
-        this.setState({
-          vrTexts: res.data
-        }, console.log('Changed Home State to include requested VRTexts', res.data))
-      })
+    this.grabVRTexts()
+  }
+  grabVRTexts(){
+    //texts are found by their homeID, which should be the lasthome at the time of post
+    console.log('Home, tried to fetch homeOwnersVRtexts')
+    axios({method: 'GET', url: `/api/vrTexts/${this.props.homeOwner._id}`})
+    .then(res =>{
+      console.log('Home Get Requests Response', res)
+      //change state, then re render with new ones shown
+      this.setState({
+        vrTexts: res.data
+      }, console.log('Changed Home State to include requested VRTexts', res.data))
+    })
   }
   redirectFromHomeView(link){
   console.log('tried to redirect from home view')
@@ -56,10 +61,12 @@ export default class Home extends React.Component{
       //want to navigate to /home/${res.data._id}
       console.log('username submit link', '/home/'+res.data[0]._id)
       this.props.changeView('/home/'+res.data[0]._id, res.data[0])
+      this.grabVRTexts()
     })
   }
     
   render() {
+    console.log('New Home State: ', this.state)
     return (
       <View >
         <View>
