@@ -71,7 +71,7 @@ export default class Login extends React.Component{
       var newErrors = []
       formIsFilled? null: newErrors.push('fill out the whole form')
       userNameIsAlphanumeric? null: newErrors.push('username is not alphanumeric')
-      passwordsMatch? null: newErrors.push('paswords do not match')
+      passwordsMatch? null: newErrors.push('passwords do not match')
       if(newErrors){
         this.throwError(newErrors)
       }
@@ -101,45 +101,51 @@ export default class Login extends React.Component{
         {/* <Pano source={asset('equirectangular.png')}/> */}
         <Pano source={{uri: 'https://farm8.static.flickr.com/7536/27336477654_8e7c705cf7_b.jpg'}}/>
             <View>
-            {this.state.errors.map((err)=>{
-              return(
-                <Text
-                style={{
-                  backgroundColor: '#777879',
-                  fontSize: 0.2,
-                  fontWeight: '400',
-                  layoutOrigin: [0.5, 0.5],
-                  paddingLeft: 0.2,
-                  paddingRight: 0.2,
-                  textAlign: 'center',
-                  textAlignVertical: 'center',
-                  transform: [{translate: [0, -0.2, -3]}],
+              <View style={{
+                
                 }}>
-                {err}
-                </Text>
-              )
-            })}
+                {this.state.errors.map((err)=>{
+                  return(
+                    <Text
+                    style={{
+                      backgroundColor: '#777879',
+                      fontSize: 0.2,
+                      fontWeight: '400',
+                      layoutOrigin: [0.5, 0.5],
+                      paddingLeft: 0.2,
+                      paddingRight: 0.2,
+                      textAlign: 'center',
+                      textAlignVertical: 'center',
+                      transform: [{translate: [0, 0, -3]}],
+                    }}>
+                    {err}
+                    </Text>
+                  )
+                })}
+              </View>
+              <View>
+                <TextInput name="username" onChange={this.onInputChange.bind(this)} value={this.state.fields.username} placeHolder={'username: '} focused={false} type={'text'} ></TextInput>
+                <TextInput name="email" onChange={this.onInputChange.bind(this)} value={this.state.fields.email} placeHolder={'email: '} focused={false} type={'email'} ></TextInput>
+                <TextInput name="password" onChange={this.onInputChange.bind(this)} value={this.state.fields.password} placeHolder={'password: '} focused={false} type={'password'} ></TextInput>
+                <TextInput name="confirmPassword" onChange={this.onInputChange.bind(this)} value={this.state.fields.confirmPassword} placeHolder={'confirm password: '} focused={false} type={'password'} ></TextInput>
+                <VrButton onClick={this.submit.bind(this)}>
+                  <Text
+                    style={{
+                      backgroundColor: '#777879',
+                      fontSize: 0.2,
+                      fontWeight: '400',
+                      layoutOrigin: [0.5, 0.5],
+                      paddingLeft: 0.2,
+                      paddingRight: 0.2,
+                      textAlign: 'center',
+                      textAlignVertical: 'center',
+                      transform: [{translate: [0, 0, -3]}],
+                    }}>
+                    Submit
+                  </Text>
+                </VrButton>
+              </View>
             </View>
-            <TextInput name="username" onChange={this.onInputChange.bind(this)} value={this.state.fields.username} placeHolder={'username: '} focused={false} type={'text'} ></TextInput>
-            <TextInput name="email" onChange={this.onInputChange.bind(this)} value={this.state.fields.email} placeHolder={'email: '} focused={false} type={'email'} ></TextInput>
-            <TextInput name="password" onChange={this.onInputChange.bind(this)} value={this.state.fields.password} placeHolder={'password: '} focused={false} type={'password'} ></TextInput>
-            <TextInput name="confirmPassword" onChange={this.onInputChange.bind(this)} value={this.state.fields.confirmPassword} placeHolder={'confirm password: '} focused={false} type={'password'} ></TextInput>
-            <VrButton onClick={this.submit.bind(this)}>
-              <Text
-                style={{
-                  backgroundColor: '#777879',
-                  fontSize: 0.2,
-                  fontWeight: '400',
-                  layoutOrigin: [0.5, 0.5],
-                  paddingLeft: 0.2,
-                  paddingRight: 0.2,
-                  textAlign: 'center',
-                  textAlignVertical: 'center',
-                  transform: [{translate: [0, 0, -3]}],
-                }}>
-                Submit
-              </Text>
-            </VrButton>
       </View>
     );
   }
