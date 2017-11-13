@@ -46,40 +46,30 @@ export default class Login extends React.Component{
     
   }
   submit(){
+    var formIsFilled = this.loginFormIsFilledOut()
+    var userNameIsAlpanumeric = this.loginFormIsFilledOut()
+    var passwordsMatch = (this.state.fields.password == this.state.fields.confirmPassword)
     //console.log('Tried to submit')
-
     //if something was typed into every field 
-    if(this.loginFormIsFilledOut()){
-      //console.log('login signup, no query is left blank')
-
-      //if password does not pass
-      if(this.usernamePasses()){
-        if(this.state.fields.password == this.state.fields.confirmPassword){
-          //console.log(login signup, password and password confirmation match)
-          var fields = {
-            "username": this.state.fields.username,
-            "email": this.state.fields.email,
-            "password": this.state.fields.password
-          }
-          clientAuth.signUp(fields).then(user => {
-            console.log('user', user)
-            if(user) {
-              //this.props.onSignUpSuccess(user)
-              console.log('changing view within login.js submit')
-              this.props.changeView(`/home/${user._id}`, user)
-            }
-          })
-        }
-        else{
-          console.log('make sure your password fields match!')
-        }
-      }//username contains non alphanumeric
-      else{
-        console.log('usernames must only contain numbers and letters')
+   
+    if(formIsFilled && userNameIsAlpanumeric && passwordsMatch){
+      var fields = {
+        "username": this.state.fields.username,
+        "email": this.state.fields.email,
+        "password": this.state.fields.password
       }
-    }//login form is not filled out
+      clientAuth.signUp(fields).then(user => {
+        console.log('user', user)
+        if(user) {
+          //this.props.onSignUpSuccess(user)
+          console.log('changing view within login.js submit')
+          this.props.changeView(`/home/${user._id}`, user)
+        }
+      })
+    }
     else{
-      console.log("don't forget to fill out every field")
+      //throw error for each error
+      
     }
   }
   throwError(error){
@@ -88,6 +78,7 @@ export default class Login extends React.Component{
     })
   }
   onInputChange(field, value) {
+    //should have errors thrown here as users are signing up
     this.setState({
       fields: {
         ...this.state.fields,
@@ -103,6 +94,7 @@ export default class Login extends React.Component{
 
         {/* <Pano source={asset('equirectangular.png')}/> */}
         <Pano source={{uri: 'https://farm8.static.flickr.com/7536/27336477654_8e7c705cf7_b.jpg'}}/>
+            <View>
             {this.state.errors.map((err)=>{
               return(
                 <Text
@@ -115,12 +107,13 @@ export default class Login extends React.Component{
                   paddingRight: 0.2,
                   textAlign: 'center',
                   textAlignVertical: 'center',
-                  transform: [{translate: [0, 0, -3]}],
+                  transform: [{translate: [0, -0.2, -3]}],
                 }}>
                 {err}
                 </Text>
               )
             })}
+            </View>
             <TextInput name="username" onChange={this.onInputChange.bind(this)} value={this.state.fields.username} placeHolder={'username: '} focused={false} type={'text'} ></TextInput>
             <TextInput name="email" onChange={this.onInputChange.bind(this)} value={this.state.fields.email} placeHolder={'email: '} focused={false} type={'email'} ></TextInput>
             <TextInput name="password" onChange={this.onInputChange.bind(this)} value={this.state.fields.password} placeHolder={'password: '} focused={false} type={'password'} ></TextInput>
