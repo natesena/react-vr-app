@@ -19,7 +19,8 @@ export default class Login extends React.Component{
       confirmPassword: 'confirm password: ',
       passwordStars: 'password: ',
       confirmPasswordStars: 'confirm password: '
-    }
+    },
+    errors: []
   }
   usernamePasses(){
     var username = this.state.fields.username
@@ -81,7 +82,11 @@ export default class Login extends React.Component{
       console.log("don't forget to fill out every field")
     }
   }
-
+  throwError(error){
+    this.setState({
+      errors: [...this.state.errors, error]
+    })
+  }
   onInputChange(field, value) {
     this.setState({
       fields: {
@@ -98,6 +103,24 @@ export default class Login extends React.Component{
 
         {/* <Pano source={asset('equirectangular.png')}/> */}
         <Pano source={{uri: 'https://farm8.static.flickr.com/7536/27336477654_8e7c705cf7_b.jpg'}}/>
+            {this.state.errors.map((err)=>{
+              return(
+                <Text
+                style={{
+                  backgroundColor: '#777879',
+                  fontSize: 0.2,
+                  fontWeight: '400',
+                  layoutOrigin: [0.5, 0.5],
+                  paddingLeft: 0.2,
+                  paddingRight: 0.2,
+                  textAlign: 'center',
+                  textAlignVertical: 'center',
+                  transform: [{translate: [0, 0, -3]}],
+                }}>
+                {err}
+                </Text>
+              )
+            })}
             <TextInput name="username" onChange={this.onInputChange.bind(this)} value={this.state.fields.username} placeHolder={'username: '} focused={false} type={'text'} ></TextInput>
             <TextInput name="email" onChange={this.onInputChange.bind(this)} value={this.state.fields.email} placeHolder={'email: '} focused={false} type={'email'} ></TextInput>
             <TextInput name="password" onChange={this.onInputChange.bind(this)} value={this.state.fields.password} placeHolder={'password: '} focused={false} type={'password'} ></TextInput>
