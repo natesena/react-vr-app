@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
 	next();
   })
   
- app.use(express.static(`${__dirname}/client/vr`))
+app.use(express.static(`${__dirname}/client/vr`))
 app.use(logger('dev'))
 app.use(bodyParser.json())
 
