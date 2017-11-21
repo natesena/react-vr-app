@@ -28,10 +28,14 @@ export default class NotSignup extends React.Component{
     if(this.state.fields.username !== 'username: ' && this.state.fields.password !== 'password: '){
       return true
     }
+    
     return false
   }
-  emailPasses(){
-    
+
+  throwError(newerrors){
+    this.setState({
+      errors: [...newerrors]
+    })
   }
   //submit should allow a user to login to their account with a JWT Token
   submit(){
@@ -40,15 +44,20 @@ export default class NotSignup extends React.Component{
       "password": this.state.fields.password
     }
       console.log('tried to submit login form')
-      clientAuth.logIn(fields).then(user =>{
-        if(user){
-          //console.log('we got a user in notsignup submit: ', user)
-          this.props.changeView(`/home/${user._id}`, user)
-        }
-        else{
-          console.log('NotSignup Improper credentials')
-        }
-      })
+      if(this.loginFormIsFilledOut()){
+        clientAuth.logIn(fields).then(user =>{
+          if(user){
+            //console.log('we got a user in notsignup submit: ', user)
+            this.props.changeView(`/home/${user._id}`, user)
+          }
+          else{
+            console.log('NotSignup Improper credentials')
+          }
+        })
+      }
+      else{
+      this.throwError(["Login Credentials Are Invalid"])
+      }
   }
 
   signUp(){
