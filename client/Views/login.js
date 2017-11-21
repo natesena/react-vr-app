@@ -7,7 +7,10 @@ import {
   VrButton,
   History
 } from 'react-vr';
+//my own components
 import TextInput from '../js/vr_components/textInput.js'
+import SimpleText from '../js/vr_components/SimpleText.js'
+
 import clientAuth from '../js/clientAuth.js'
 
 export default class Login extends React.Component{
@@ -22,6 +25,7 @@ export default class Login extends React.Component{
     },
     errors: []
   }
+  //usernames should pass some simple checks
   usernamePasses(){
     var username = this.state.fields.username
     var usernamePassesTest = true
@@ -37,15 +41,18 @@ export default class Login extends React.Component{
     }
     return usernamePassesTest
   }
+  //make sure that the login form is not blank
   loginFormIsFilledOut(){
     if(this.state.fields.username !== 'username: ' && this.state.fields.email !== 'email: ' && this.state.fields.password !== 'password: '&&this.state.fields.confirmPassword !== 'confirm password: '){
       return true
     }
     return false
   }
+  //
   emailPasses(){
     
   }
+
   submit(){
       //console.log('Tried to submit')
     var formIsFilled = this.loginFormIsFilledOut()
@@ -80,15 +87,15 @@ export default class Login extends React.Component{
       
     }
   }
+  //throwError shows errors above the singup form so the user knows what mistakes they made
   throwError(newerrors){
     this.setState({
       errors: [...newerrors]
     })
   }
+
   onInputChange(field, value) {
-    //throw error if value is non alphanumeric
     //console.log('login on inputchange field and value: ', field, value)
-   
     this.setState({
       fields: {
         ...this.state.fields,
@@ -115,20 +122,7 @@ export default class Login extends React.Component{
                 }}>
                 {this.state.errors.map((err)=>{
                   return(
-                    <Text
-                    style={{
-                      backgroundColor: '#777879',
-                      fontSize: 0.2,
-                      fontWeight: '400',
-                      layoutOrigin: [0.5, 0.5],
-                      paddingLeft: 0.2,
-                      paddingRight: 0.2,
-                      textAlign: 'center',
-                      textAlignVertical: 'center',
-                      transform: [{translate: [0, 0, -3]}],
-                    }}>
-                    {err}
-                    </Text>
+                    <SimpleText value={err}></SimpleText>
                   )
                 })}
               </View>
@@ -138,20 +132,7 @@ export default class Login extends React.Component{
                 <TextInput name="password" onChange={this.onInputChange.bind(this)} value={this.state.fields.password} placeHolder={'password: '} focused={false} type={'password'} ></TextInput>
                 <TextInput name="confirmPassword" onChange={this.onInputChange.bind(this)} value={this.state.fields.confirmPassword} placeHolder={'confirm password: '} focused={false} type={'password'} ></TextInput>
                 <VrButton onClick={this.submit.bind(this)}>
-                  <Text
-                    style={{
-                      backgroundColor: '#777879',
-                      fontSize: 0.2,
-                      fontWeight: '400',
-                      layoutOrigin: [0.5, 0.5],
-                      paddingLeft: 0.2,
-                      paddingRight: 0.2,
-                      textAlign: 'center',
-                      textAlignVertical: 'center',
-                      transform: [{translate: [0, 0, -3]}],
-                    }}>
-                    Submit
-                  </Text>
+                <SimpleText value={"Submit"}></SimpleText>
                 </VrButton>
               </View>
             </View>

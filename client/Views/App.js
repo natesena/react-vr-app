@@ -64,7 +64,9 @@ export default class App extends React.Component {
 	}
 
 	onLoginSuccess(user) {
-		this.setState({ user: clientAuth.getCurrentUser() })
+		this.setState({ 
+      user: clientAuth.getCurrentUser() 
+    })
 	}
 
 	logOut() {

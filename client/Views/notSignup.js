@@ -90,12 +90,10 @@ export default class NotSignup extends React.Component{
                 <TextInput name="password" onChange={this.onInputChange.bind(this)} value={this.state.fields.password} placeHolder={'password: '} focused={false} type={'password'} ></TextInput>
                
                 <VrButton onClick={this.submit.bind(this)}>
-                <SimpleText value={"Submit"}></SimpleText>
-               
+                  <SimpleText value={"Submit"}></SimpleText>
                 </VrButton>
                 <VrButton onClick={this.signUp.bind(this)}>
-                <SimpleText value={"Sign Up"}></SimpleText>
-               
+                  <SimpleText value={"Sign Up"}></SimpleText>
                 </VrButton>
               </View>
             </View>
