@@ -40,6 +40,7 @@ function logIn(credentials) {
 		.then(res => {
 			console.log('------------response in clientauth login------------', res)
 			const token = res.data.token
+			console.log('clientauth Login current token: ', token)
 			if(token) {
 				clientAuth.defaults.headers.common.token = setToken(token)
 				return jwtDecode(token)

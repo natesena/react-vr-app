@@ -33,6 +33,7 @@ export default class NotSignup extends React.Component{
   emailPasses(){
     
   }
+  //submit should allow a user to login to their account with a JWT Token
   submit(){
     var fields = {
       "username": this.state.fields.username,
@@ -40,8 +41,13 @@ export default class NotSignup extends React.Component{
     }
       console.log('tried to submit login form')
       clientAuth.logIn(fields).then(user =>{
-        //hooray we got a user
-        console.log('we got a user in notsignup submit: ', user)
+        if(user){
+          //console.log('we got a user in notsignup submit: ', user)
+          this.props.changeView(`/home/${user._id}`, user)
+        }
+        else{
+          console.log('NotSignup Improper credentials')
+        }
       })
   }
 
