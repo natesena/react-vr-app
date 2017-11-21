@@ -53,7 +53,9 @@ module.exports = {
 	// the login route
 	authenticate: (req, res) => {
 		// check if the user exists
-		User.findOne({email: req.body.email}, (err, user) => {
+		console.log('tried to authenticate in user controller')
+		console.log("req.body",req.body)
+		User.findOne({username: req.body.username}, (err, user) => {
 			// if there's no user or the password is invalid
 			if(!user || !user.validPassword(req.body.password)) {
 				// deny access

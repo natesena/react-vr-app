@@ -1,3 +1,4 @@
+//React-VR Standard Code
 import React from 'react';
 import {
   AppRegistry,
@@ -9,18 +10,23 @@ import {
 } from 'react-vr';
 import clientAuth from '../js/clientAuth.js'
 
+//self-produced views
 import Login from './login.js'
 import Home from './Home.js'
 import AddText from './AddText.js'
+import NotSignup from './NotSignup.js'
 
+// 
+//state begins with login and no user as we update user once we recognize a JWT, must keep track of every view for conditional rendering, viewOwner represents who owns the world we are in
 export default class App extends React.Component {
   state={
-    history: [['login']],
+    history: [['NotSignup']],
     currentHistoryIndex: 0,
     user: null,
-    view: 'login',
+    view: 'NotSignup',
     viewOwner: null,
   }
+  //format address takes the string from out changeView function and returns an array of all the necessary data that would typically be in URLs for RESTful Routes
   formatAddress(string){
     var stringARR = string.split('')
     var splits = []
@@ -41,14 +47,16 @@ export default class App extends React.Component {
     }
     return splits
   }
-
+  //Go back will be used to change the view to go backwards in history
   goBack(){
     //hijack history API
   }
+  //Go forwards will be used to change the view to go forwards in history
   goForwards(){
     //hijack history API
   }
   //------------------------------------------------------
+  
   componentDidMount() {
 		this.setState({ 
       user: clientAuth.getCurrentUser() 
@@ -76,7 +84,7 @@ export default class App extends React.Component {
     return this.state.user._id 
     
   }
-  //-----------------------------------------------------
+  //changeView changes the current view for the app to render
   changeView(link, newViewOwner){
     //thenewViewOwner is the user who owns the view we are navigating to
     //if a user just signed up, the new view owner is also the owner 
@@ -116,6 +124,11 @@ export default class App extends React.Component {
     else if(this.state.view == 'add'){
       return(
         <AddText user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/>
+      )
+    }
+    else if(this.state.view == 'NotSignup'){
+      return(
+        <NotSignup changeView={this.changeView.bind(this)} />
       )
     }
   }

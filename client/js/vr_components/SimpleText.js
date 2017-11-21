@@ -10,6 +10,10 @@ import {
       constructor(props){
           super(props)
       }
+      state={
+        color: '#777879'  
+      }
+      
       render(){
           return(
             <View>

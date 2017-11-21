@@ -7,12 +7,13 @@ import {
   VrButton,
   History
 } from 'react-vr';
-import TextInput from '../js/vr_components/textInput.js'
 import clientAuth from '../js/clientAuth.js'
+
+import TextInput from '../js/vr_components/textInput.js'
 import FocusButton from '../js/vr_components/focusButton.js'
 import SimpleText from '../js/vr_components/SimpleText.js'
 
-export default class Login extends React.Component{
+export default class NotSignup extends React.Component{
     state = {
     fields: {
       username: 'username: ',
@@ -33,7 +34,19 @@ export default class Login extends React.Component{
     
   }
   submit(){
+    var fields = {
+      "username": this.state.fields.username,
+      "password": this.state.fields.password
+    }
       console.log('tried to submit login form')
+      clientAuth.logIn(fields).then(user =>{
+        //hooray we got a user
+        console.log('we got a user in notsignup submit: ', user)
+      })
+  }
+
+  signUp(){
+    this.props.changeView("/login", null)
   }
 
   onInputChange(field, value) {
@@ -61,20 +74,7 @@ export default class Login extends React.Component{
                 }}>
                 {this.state.errors.map((err)=>{
                   return(
-                    <Text
-                    style={{
-                      backgroundColor: '#777879',
-                      fontSize: 0.2,
-                      fontWeight: '400',
-                      layoutOrigin: [0.5, 0.5],
-                      paddingLeft: 0.2,
-                      paddingRight: 0.2,
-                      textAlign: 'center',
-                      textAlignVertical: 'center',
-                      transform: [{translate: [0, 0, -3]}],
-                    }}>
-                    {err}
-                    </Text>
+                    <SimpleText value={err}></SimpleText>
                   )
                 })}
               </View>
@@ -84,20 +84,12 @@ export default class Login extends React.Component{
                 <TextInput name="password" onChange={this.onInputChange.bind(this)} value={this.state.fields.password} placeHolder={'password: '} focused={false} type={'password'} ></TextInput>
                
                 <VrButton onClick={this.submit.bind(this)}>
-                  <Text
-                    style={{
-                      backgroundColor: '#777879',
-                      fontSize: 0.2,
-                      fontWeight: '400',
-                      layoutOrigin: [0.5, 0.5],
-                      paddingLeft: 0.2,
-                      paddingRight: 0.2,
-                      textAlign: 'center',
-                      textAlignVertical: 'center',
-                      transform: [{translate: [0, 0, -3]}],
-                    }}>
-                    Submit
-                  </Text>
+                <SimpleText value={"Submit"}></SimpleText>
+               
+                </VrButton>
+                <VrButton onClick={this.signUp.bind(this)}>
+                <SimpleText value={"Sign Up"}></SimpleText>
+               
                 </VrButton>
               </View>
             </View>

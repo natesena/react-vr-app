@@ -38,6 +38,7 @@ function getCurrentUser() {
 function logIn(credentials) {
 	return clientAuth({ method: 'post', url: '/api/users/authenticate', data: credentials })
 		.then(res => {
+			console.log('------------response in clientauth login------------', res)
 			const token = res.data.token
 			if(token) {
 				clientAuth.defaults.headers.common.token = setToken(token)
