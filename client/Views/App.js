@@ -62,6 +62,9 @@ export default class App extends React.Component {
   componentDidMount() {
 		this.setState({ 
       user: clientAuth.getCurrentUser() 
+    }, ()=>{
+      //not sure if keeping this, just want to maintain a hostory state for all navigable actions
+      History.pushState(this.state, this.state.history[0],"/login")
     })
 	}
 
@@ -107,7 +110,6 @@ export default class App extends React.Component {
       viewOwner: newViewOwner,
     }, ()=>{
       History.pushState(this.state, this.state.newViewOwner + linkSplits[0],link)
-      console.log("new history", History)
     })
     //if navigating to a new user's profile
   }
