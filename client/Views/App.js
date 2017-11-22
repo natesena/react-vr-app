@@ -5,6 +5,7 @@ import {
   asset,
   Pano,
   Text,
+  Scene,
   View,
   VrButton,
   NativeModules
@@ -52,6 +53,7 @@ export default class App extends React.Component {
   //Go back will be used to change the view to go backwards in history
   goBack(){
     //hijack history API
+    console.log('tried to go back')
   }
   //Go forwards will be used to change the view to go forwards in history
   goForwards(){
@@ -63,17 +65,17 @@ export default class App extends React.Component {
 		this.setState({ 
       user: clientAuth.getCurrentUser() 
     }, ()=>{
-      //not sure if keeping this, just want to maintain a hostory state for all navigable actions
-      History.pushState(this.state, this.state.history[0],"/login")
+      History.pushState(this.state, "Login", "/login")
     })
-	}
-
+    
+  }
+  //not yet implemented
 	onLoginSuccess(user) {
 		this.setState({ 
       user: clientAuth.getCurrentUser() 
     })
 	}
-
+  //not yet implemented
 	logOut() {
 		clientAuth.logOut()
 		this.setState({ user: null })
@@ -140,7 +142,7 @@ export default class App extends React.Component {
     }
     else if(this.state.view == 'login'){
       return(
-        <Login changeView={this.changeView.bind(this)} />
+        <Scene style={{transform:[{translateX: 0}, {translateY: 0}, {translateZ: 0}]}}><Login changeView={this.changeView.bind(this)} /></Scene>
       )
     }
   }
