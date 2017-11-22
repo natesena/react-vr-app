@@ -7,23 +7,25 @@ import {
   Text,
   View,
   VrButton,
+  NativeModules
 } from 'react-vr';
 import clientAuth from '../js/clientAuth.js'
 
 //self-produced views
-import Login from './login.js'
+import SignUp from './SignUp.js'
 import Home from './Home.js'
 import AddText from './AddText.js'
-import NotSignup from './NotSignup.js'
+import Login from './Login.js'
 
+const History = NativeModules.History
 // 
 //state begins with login and no user as we update user once we recognize a JWT, must keep track of every view for conditional rendering, viewOwner represents who owns the world we are in
 export default class App extends React.Component {
   state={
-    history: [['NotSignup']],
+    history: [['login']],
     currentHistoryIndex: 0,
     user: null,
-    view: 'NotSignup',
+    view: 'login',
     viewOwner: null,
   }
   //format address takes the string from out changeView function and returns an array of all the necessary data that would typically be in URLs for RESTful Routes
@@ -73,6 +75,7 @@ export default class App extends React.Component {
 		clientAuth.logOut()
 		this.setState({ user: null })
   }
+
   //should return id of last home we were at
   getLastHome(){
     for(let i = this.state.history.length - 1; i >= 0; i--){
@@ -91,6 +94,7 @@ export default class App extends React.Component {
     //thenewViewOwner is the user who owns the view we are navigating to
     //if a user just signed up, the new view owner is also the owner 
     console.log('tried to change view within APP')
+    //console.log("History", History)
     var linkSplits = this.formatAddress(link)
     console.log('linkSplits', linkSplits)
     //need to handle currentHistoryIndex changing with backwards, forwards
@@ -101,9 +105,13 @@ export default class App extends React.Component {
       view: linkSplits[0],
       user: this.state.user? this.state.user: newViewOwner,
       viewOwner: newViewOwner,
+    }, ()=>{
+      History.pushState(this.state, this.state.newViewOwner + linkSplits[0],link)
+      console.log("new history", History)
     })
     //if navigating to a new user's profile
   }
+
   render(){
     //should i be getting the last home or last homeowner
     var lastHome
@@ -113,9 +121,9 @@ export default class App extends React.Component {
     }
     console.log(lastHome) 
     console.log("new state in APP:", this.state)
-   if(this.state.view == 'login'){
+   if(this.state.view == 'signup'){
      return(
-      <Login changeView={this.changeView.bind(this)}/>
+      <SignUp changeView={this.changeView.bind(this)}/>
      )
    }
    else if(this.state.view == 'home'){
@@ -128,9 +136,9 @@ export default class App extends React.Component {
         <AddText user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/>
       )
     }
-    else if(this.state.view == 'NotSignup'){
+    else if(this.state.view == 'login'){
       return(
-        <NotSignup changeView={this.changeView.bind(this)} />
+        <Login changeView={this.changeView.bind(this)} />
       )
     }
   }
