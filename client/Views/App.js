@@ -120,6 +120,16 @@ export default class App extends React.Component {
       view: linkSplits[0],
       user: this.state.user? this.state.user: newViewOwner,
       viewOwner: newViewOwner,
+      location: {
+        x: 0,
+        y: 0,
+        z: 0
+      },
+      rotation: {
+        x: 0,
+        y: 0,
+        z: 0
+      }
     }, ()=>{
       History.pushState(this.state, this.state.newViewOwner + linkSplits[0],link)
     })
@@ -195,17 +205,17 @@ export default class App extends React.Component {
     console.log("new state in APP:", this.state)
    if(this.state.view == 'signup'){
      return(
-      <SignUp changeView={this.changeView.bind(this)}/>
+      <Scene style={{transform:[{translateX: this.state.location.x}, {translateY: this.state.location.y}, {translateZ: this.state.location.z}]}} onInput={this.onInput.bind(this)}><SignUp changeView={this.changeView.bind(this)}/></Scene>
      )
    }
    else if(this.state.view == 'home'){
       return(
-      <Home user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/>
+        <Scene style={{transform:[{translateX: this.state.location.x}, {translateY: this.state.location.y}, {translateZ: this.state.location.z}]}} onInput={this.onInput.bind(this)}><Home user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/></Scene>
       )
     }
     else if(this.state.view == 'add'){
       return(
-        <AddText user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/>
+        <Scene style={{transform:[{translateX: this.state.location.x}, {translateY: this.state.location.y}, {translateZ: this.state.location.z}]}} onInput={this.onInput.bind(this)}><AddText user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/></Scene>
       )
     }
     else if(this.state.view == 'login'){
