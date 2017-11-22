@@ -28,6 +28,16 @@ export default class App extends React.Component {
     user: null,
     view: 'login',
     viewOwner: null,
+    location: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    rotation: {
+      x: 0,
+      y: 0,
+      z: 0
+    }
   }
   //format address takes the string from out changeView function and returns an array of all the necessary data that would typically be in URLs for RESTful Routes
   formatAddress(string){
@@ -115,6 +125,64 @@ export default class App extends React.Component {
     })
     //if navigating to a new user's profile
   }
+  onInput(evt){
+    if(evt.nativeEvent.inputEvent.type == 'KeyboardInputEvent'){
+      //if key is wasd or arrows, begin moving!
+      var theKeyCode = evt.nativeEvent.inputEvent.keyCode
+      var key = evt.nativeEvent.inputEvent.key
+      var eventType = evt.nativeEvent.inputEvent.eventType
+      
+      if(key == 'w'){
+        //KEYDOWN VS KEYUP
+        eventType == 'keydown'? this.handleMovement('w'): null
+        
+      }
+      if(key == 's'){
+        eventType == 'keydown'? this.handleMovement('s'): null
+      }
+      if(key == 'a'){
+        eventType == 'keydown'? this.handleMovement('a'): null
+      }
+      if(key =='d'){
+        eventType == 'keydown'? this.handleMovement('d'): null
+      }
+      if( key == 'left'){
+        eventType == 'keydown'? this.handleMovement('left'): null
+      }
+      if(key == 'right'){
+        eventType == 'keydown'? this.handleMovement('right'): null
+      }
+      //make movement in a direction true if that key is down
+
+    }
+  }
+  handleMovement(direction){
+    var speed = 0.1
+    var dx = 0
+    var dy = 0
+    var dz = 0
+
+    if(direction == 'w'){
+      dz = 1
+    }
+    if(direction == 's'){
+      dz = -1
+    }
+    if(direction == 'a'){
+      dx = -1
+    }
+    if(direction == 'd'){
+      dx = 1
+    }
+    this.setState({
+      location:{
+        x: this.state.location.x + dx*speed,
+        y: this.state.location.y + dy*speed,
+        z: this.state.location.z - dz*speed
+      }
+    })
+  }
+
 
   render(){
     //should i be getting the last home or last homeowner
@@ -142,7 +210,7 @@ export default class App extends React.Component {
     }
     else if(this.state.view == 'login'){
       return(
-        <Scene style={{transform:[{translateX: 0}, {translateY: 0}, {translateZ: 0}]}}><Login changeView={this.changeView.bind(this)} /></Scene>
+        <Scene style={{transform:[{translateX: this.state.location.x}, {translateY: this.state.location.y}, {translateZ: this.state.location.z}]}} onInput={this.onInput.bind(this)}><Login changeView={this.changeView.bind(this)} /></Scene>
       )
     }
   }
