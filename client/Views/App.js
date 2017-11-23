@@ -165,7 +165,7 @@ export default class App extends React.Component {
   handleMovement(direction){
     //currenRotation gets the rotation of the user ie, the rotation of the view as they have pulled it on desktop of moved on mobile
     var currentRotation = VrHeadModel.rotation()
-
+    //these should only be used for calculating during
     var currentRotationX = currentRotation[0]
     var currentRotationY = currentRotation[1]
     var currentRotationZ = currentRotation[2]
@@ -176,7 +176,7 @@ export default class App extends React.Component {
     var rotationZ = this.state.rotation[2]
     
     var speed = 0.1
-    var rotationSpeed = Math.PI/10
+    var rotationSpeed = Math.PI/5
     
     var dx = 0
     var dy = 0
@@ -202,7 +202,8 @@ export default class App extends React.Component {
       ry = 1
     }
     
-    console.log('App Movement Handler ', " speed: ", speed, " rotationSpeed: ", rotationSpeed, " rotationX: ", rotationX, " rotationY: ", rotationY, " rotationZ: ", rotationZ, " dx: ", dx, " dy: ", dy, " dz: ", dz, " ry: ", ry)
+    console.log('App Movement Handler ', " speed: ", speed, " rotationSpeed: ", rotationSpeed, " dx: ", dx, " dy: ", dy, " dz: ", dz, " ry: ", ry)
+    console.log("AppMovement Handler 2 "," currentrotationx: ", currentRotationX, " currentrotationY: ", currentRotationY, " currentroationZ: ", currentRotationZ, " rotationX: ", rotationX, " rotationY: ", rotationY, " rotationZ: ", rotationZ)
     //one set state should handle both forward and lateral movement, currently it does not
     this.setState({
       location:{
