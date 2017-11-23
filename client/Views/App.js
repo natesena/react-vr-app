@@ -8,7 +8,8 @@ import {
   Scene,
   View,
   VrButton,
-  NativeModules
+  NativeModules,
+  VrHeadModel
 } from 'react-vr';
 import clientAuth from '../js/clientAuth.js'
 
@@ -33,11 +34,7 @@ export default class App extends React.Component {
       y: 0,
       z: 0
     },
-    rotation: {
-      x: 0,
-      y: 0,
-      z: 0
-    }
+    rotation: [0,0,0]
   }
   //format address takes the string from out changeView function and returns an array of all the necessary data that would typically be in URLs for RESTful Routes
   formatAddress(string){
@@ -72,8 +69,10 @@ export default class App extends React.Component {
   //------------------------------------------------------
   
   componentDidMount() {
+    console.log('Component MOunt Head Rotation: ',VrHeadModel.rotation())
 		this.setState({ 
-      user: clientAuth.getCurrentUser() 
+      user: clientAuth.getCurrentUser(),
+      rotation: VrHeadModel.rotation()
     }, ()=>{
       History.pushState(this.state, "Login", "/login")
     })
@@ -125,11 +124,7 @@ export default class App extends React.Component {
         y: 0,
         z: 0
       },
-      rotation: {
-        x: 0,
-        y: 0,
-        z: 0
-      }
+      rotation: [0,0,0]
     }, ()=>{
       History.pushState(this.state, this.state.newViewOwner + linkSplits[0],link)
     })
@@ -142,10 +137,11 @@ export default class App extends React.Component {
       var key = evt.nativeEvent.inputEvent.key
       var eventType = evt.nativeEvent.inputEvent.eventType
       
+      //console.log('evt key', key)
+
       if(key == 'w'){
         //KEYDOWN VS KEYUP
         eventType == 'keydown'? this.handleMovement('w'): null
-        
       }
       if(key == 's'){
         eventType == 'keydown'? this.handleMovement('s'): null
@@ -156,27 +152,42 @@ export default class App extends React.Component {
       if(key =='d'){
         eventType == 'keydown'? this.handleMovement('d'): null
       }
-      if( key == 'left'){
-        eventType == 'keydown'? this.handleMovement('left'): null
+      if( key == 'ArrowLeft'){
+        eventType == 'keydown'? this.handleMovement('ArrowLeft'): null
       }
-      if(key == 'right'){
-        eventType == 'keydown'? this.handleMovement('right'): null
+      if(key == 'ArrowRight'){
+        eventType == 'keydown'? this.handleMovement('ArrowRight'): null
       }
       //make movement in a direction true if that key is down
 
     }
   }
   handleMovement(direction){
+    //currenRotation gets the rotation of the user ie, the rotation of the view as they have pulled it on desktop of moved on mobile
+    var currentRotation = VrHeadModel.rotation()
+
+    var currentRotationX = currentRotation[0]
+    var currentRotationY = currentRotation[1]
+    var currentRotationZ = currentRotation[2]
+
+    //these rotations are the normal ones for spinning
+    var rotationX = this.state.rotation[0]
+    var rotationY = this.state.rotation[1]
+    var rotationZ = this.state.rotation[2]
+    
     var speed = 0.1
+    var rotationSpeed = Math.PI/10
+    
     var dx = 0
     var dy = 0
     var dz = 0
+    var ry = 0
 
     if(direction == 'w'){
-      dz = 1
+      dz = -1
     }
     if(direction == 's'){
-      dz = -1
+      dz = 1
     }
     if(direction == 'a'){
       dx = -1
@@ -184,12 +195,22 @@ export default class App extends React.Component {
     if(direction == 'd'){
       dx = 1
     }
+    if(direction == 'ArrowLeft'){
+      ry = -1
+    }
+    if(direction == 'ArrowRight'){
+      ry = 1
+    }
+    
+    console.log('App Movement Handler ', " speed: ", speed, " rotationSpeed: ", rotationSpeed, " rotationX: ", rotationX, " rotationY: ", rotationY, " rotationZ: ", rotationZ, " dx: ", dx, " dy: ", dy, " dz: ", dz, " ry: ", ry)
+    //one set state should handle both forward and lateral movement, currently it does not
     this.setState({
       location:{
         x: this.state.location.x + dx*speed,
         y: this.state.location.y + dy*speed,
-        z: this.state.location.z - dz*speed
-      }
+        z: this.state.location.z + dz*speed
+      },
+      rotation: [rotationX, rotationY - ry * rotationSpeed, rotationZ]
     })
   }
 
@@ -201,26 +222,28 @@ export default class App extends React.Component {
     if(this.state.user){
       lastHome = this.getLastHome()
     }
-    console.log(lastHome) 
+    var rotationY = this.state.rotation[1]
+    var sceneStyle = {transform:[{translateX: this.state.location.x}, {translateY: this.state.location.y}, {translateZ: this.state.location.z}, {rotateY: rotationY}]}
+    //console.log(lastHome) 
     console.log("new state in APP:", this.state)
    if(this.state.view == 'signup'){
      return(
-      <Scene style={{transform:[{translateX: this.state.location.x}, {translateY: this.state.location.y}, {translateZ: this.state.location.z}]}} onInput={this.onInput.bind(this)}><SignUp changeView={this.changeView.bind(this)}/></Scene>
+      <Scene style={sceneStyle} onInput={this.onInput.bind(this)}><SignUp changeView={this.changeView.bind(this)}/></Scene>
      )
    }
    else if(this.state.view == 'home'){
       return(
-        <Scene style={{transform:[{translateX: this.state.location.x}, {translateY: this.state.location.y}, {translateZ: this.state.location.z}]}} onInput={this.onInput.bind(this)}><Home user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/></Scene>
+        <Scene style={sceneStyle} onInput={this.onInput.bind(this)}><Home user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/></Scene>
       )
     }
     else if(this.state.view == 'add'){
       return(
-        <Scene style={{transform:[{translateX: this.state.location.x}, {translateY: this.state.location.y}, {translateZ: this.state.location.z}]}} onInput={this.onInput.bind(this)}><AddText user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/></Scene>
+        <Scene style={sceneStyle} onInput={this.onInput.bind(this)}><AddText user={this.state.user} homeOwner={this.state.viewOwner} changeView={this.changeView.bind(this)} getHome={lastHome}/></Scene>
       )
     }
     else if(this.state.view == 'login'){
       return(
-        <Scene style={{transform:[{translateX: this.state.location.x}, {translateY: this.state.location.y}, {translateZ: this.state.location.z}]}} onInput={this.onInput.bind(this)}><Login changeView={this.changeView.bind(this)} /></Scene>
+        <Scene style={sceneStyle} onInput={this.onInput.bind(this)}><Login changeView={this.changeView.bind(this)} /></Scene>
       )
     }
   }
