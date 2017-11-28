@@ -1,6 +1,10 @@
 {
   "name": "test_vr",
   "version": "0.0.1",
+  "engines": {
+    "node": "8.4.0",
+    "npm": "5.5.1"
+  },
   "private": true,
   "scripts": {
     "start": "node -e \"console.log('open browser at http://localhost:8081/vr/\\n\\n');\" && node node_modules/react-native/local-cli/cli.js start",
@@ -12,6 +16,7 @@
   },
   "dependencies": {
     "axios": "^0.17.0",
+    "concat-stream": "^1.6.0",
     "jwt-decode": "^2.2.0",
     "ovrui": "~2.0.0",
     "react": "^16.0.0-alpha.12",

@@ -1,0 +1,90 @@
+Object.defineProperty(exports,"__esModule",{value:true});var _axios=require("axios");var _axios2=babelHelpers.interopRequireDefault(_axios);
+var _jwtDecode=require("jwt-decode");var _jwtDecode2=babelHelpers.interopRequireDefault(_jwtDecode);
+var _reactVr=require("react-vr");
+
+var clientAuth=_axios2.default.create();
+clientAuth.defaults.headers.common.token=getToken();
+
+function getToken(){
+var token=_reactVr.AsyncStorage.getItem('token',function(err,token){
+//console.log('tried to get token: ',token)
+if(token){
+//console.log('token: ', token)
+return token;
+}
+return err;
+});
+//console.log('the promise object returned by Asyncstorage', token)
+}
+
+function setToken(token){
+_reactVr.AsyncStorage.setItem('token',token,function(err){
+if(err){
+console.log(err);
+}
+});
+return token;
+}
+
+function getCurrentUser(){
+var token=getToken();
+if(token){
+console.log('token:',token);
+return(0,_jwtDecode2.default)(token);
+}
+return null;
+}
+
+function logIn(credentials){
+return clientAuth({method:'post',url:'/api/users/authenticate',data:credentials}).
+then(function(res){
+console.log('------------response in clientauth login------------',res);
+var token=res.data.token;
+//console.log('clientauth Login current token: ', token)
+if(token){
+clientAuth.defaults.headers.common.token=setToken(token);
+return(0,_jwtDecode2.default)(token);
+}else{
+return false;
+}
+});
+}
+
+// logIn and signUp functions could be combined into one since the only difference is the url we're sending a request to..
+function signUp(userInfo){
+// return fetch('/api/users', {
+// 	method: 'POST',
+// 	headers: {
+// 		'Accept': 'application/json',
+// 		'Content-Type': 'application/json'
+// 	},
+// 	body: userInfo
+// })
+return clientAuth({method:'post',url:'/api/users',data:userInfo}).
+then(function(res){
+console.log('then response',res);
+var token=res.data.token;
+if(token){
+clientAuth.defaults.headers.common.token=setToken(token);
+return(0,_jwtDecode2.default)(token);
+}else{
+return false;
+}
+}).
+catch(function(err){
+console.log('we got an err back: ',err);
+});
+}
+
+function logOut(){
+_reactVr.AsyncStorage.removeItem('token');
+delete clientAuth.defaults.headers.common.token;
+return true;
+}exports.default=
+
+
+{
+getCurrentUser:getCurrentUser,
+logIn:logIn,
+signUp:signUp,
+logOut:logOut};

@@ -1,0 +1,21 @@
+Object.defineProperty(exports,"__esModule",{value:true});var _react=require("react");var _react2=babelHelpers.interopRequireDefault(_react);
+var _reactVr=require("react-vr");
+
+
+
+
+
+
+
+var _App=require("./Views/App.js");var _App2=babelHelpers.interopRequireDefault(_App);var
+
+
+test_vr=function(_React$Component){babelHelpers.inherits(test_vr,_React$Component);function test_vr(){babelHelpers.classCallCheck(this,test_vr);return babelHelpers.possibleConstructorReturn(this,(test_vr.__proto__||Object.getPrototypeOf(test_vr)).apply(this,arguments));}babelHelpers.createClass(test_vr,[{key:"render",value:function render()
+{
+return(
+_react2.default.createElement(_App2.default,null));
+
+}}]);return test_vr;}(_react2.default.Component);exports.default=test_vr;
+;
+
+_reactVr.AppRegistry.registerComponent('test_vr',function(){return test_vr;});

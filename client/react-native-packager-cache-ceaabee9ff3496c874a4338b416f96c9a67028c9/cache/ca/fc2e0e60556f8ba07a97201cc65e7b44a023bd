@@ -1,0 +1,111 @@
+Object.defineProperty(exports,"__esModule",{value:true});var _react=require("react");var _react2=babelHelpers.interopRequireDefault(_react);
+var _reactVr=require("react-vr");
+
+
+
+
+
+
+
+var _clientAuth=require("../js/clientAuth.js");var _clientAuth2=babelHelpers.interopRequireDefault(_clientAuth);
+
+var _textInput=require("../js/vr_components/textInput.js");var _textInput2=babelHelpers.interopRequireDefault(_textInput);
+var _focusButton=require("../js/vr_components/focusButton.js");var _focusButton2=babelHelpers.interopRequireDefault(_focusButton);
+var _SimpleText=require("../js/vr_components/SimpleText.js");var _SimpleText2=babelHelpers.interopRequireDefault(_SimpleText);var
+
+NotSignup=function(_React$Component){babelHelpers.inherits(NotSignup,_React$Component);function NotSignup(){var _ref;var _temp,_this,_ret;babelHelpers.classCallCheck(this,NotSignup);for(var _len=arguments.length,args=Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}return _ret=(_temp=(_this=babelHelpers.possibleConstructorReturn(this,(_ref=NotSignup.__proto__||Object.getPrototypeOf(NotSignup)).call.apply(_ref,[this].concat(args))),_this),_this.
+state={
+fields:{
+username:'username: ',
+password:'password: ',
+passwordStars:'password: ',
+confirmPasswordStars:'confirm password: '},
+
+errors:[]},_temp),babelHelpers.possibleConstructorReturn(_this,_ret);}babelHelpers.createClass(NotSignup,[{key:"loginFormIsFilledOut",value:function loginFormIsFilledOut()
+
+
+{
+if(this.state.fields.username!=='username: '&&this.state.fields.password!=='password: '){
+return true;
+}
+
+return false;
+}},{key:"throwError",value:function throwError(
+
+newerrors){
+this.setState({
+errors:[].concat(babelHelpers.toConsumableArray(newerrors))});
+
+}
+//submit should allow a user to login to their account with a JWT Token
+},{key:"submit",value:function submit(){var _this2=this;
+var fields={
+"username":this.state.fields.username,
+"password":this.state.fields.password};
+
+console.log('tried to submit login form');
+if(this.loginFormIsFilledOut()){
+_clientAuth2.default.logIn(fields).then(function(user){
+if(user){
+console.log('we got a user in notsignup submit: ',user);
+_this2.props.changeView("/home/"+user._id,user);
+}else
+{
+console.log('NotSignup Improper credentials');
+}
+});
+}else
+{
+this.throwError(["Login Credentials Are Invalid"]);
+}
+}},{key:"signUp",value:function signUp()
+
+{
+this.props.changeView("/signup",null);
+}},{key:"onInputChange",value:function onInputChange(
+
+field,value){
+//throw error if value is non alphanumeric
+//console.log('login on inputchange field and value: ', field, value)
+
+this.setState({
+fields:babelHelpers.extends({},
+this.state.fields,babelHelpers.defineProperty({},
+field,value))});
+
+
+}},{key:"render",value:function render()
+
+{
+//console.log(this.state.fields)
+return(
+_react2.default.createElement(_reactVr.View,null,
+
+
+_react2.default.createElement(_reactVr.Pano,{source:{uri:'https://farm8.static.flickr.com/7536/27336477654_8e7c705cf7_b.jpg'}}),
+_react2.default.createElement(_reactVr.View,null,
+_react2.default.createElement(_reactVr.View,{style:{}},
+
+
+this.state.errors.map(function(err){
+return(
+_react2.default.createElement(_SimpleText2.default,{value:err}));
+
+})),
+
+_react2.default.createElement(_reactVr.View,null,
+_react2.default.createElement(_textInput2.default,{name:"username",onChange:this.onInputChange.bind(this),value:this.state.fields.username,placeHolder:'username: ',focused:false,type:'text'}),
+
+_react2.default.createElement(_textInput2.default,{name:"password",onChange:this.onInputChange.bind(this),value:this.state.fields.password,placeHolder:'password: ',focused:false,type:'password'}),
+
+_react2.default.createElement(_reactVr.VrButton,{onClick:this.submit.bind(this)},
+_react2.default.createElement(_SimpleText2.default,{value:"Submit"})),
+
+_react2.default.createElement(_reactVr.VrButton,{onClick:this.signUp.bind(this)},
+_react2.default.createElement(_SimpleText2.default,{value:"Sign Up"}))))));
+
+
+
+
+
+}}]);return NotSignup;}(_react2.default.Component);exports.default=NotSignup;

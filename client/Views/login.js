@@ -47,7 +47,7 @@ export default class NotSignup extends React.Component{
       if(this.loginFormIsFilledOut()){
         clientAuth.logIn(fields).then(user =>{
           if(user){
-            //console.log('we got a user in notsignup submit: ', user)
+            console.log('we got a user in notsignup submit: ', user)
             this.props.changeView(`/home/${user._id}`, user)
           }
           else{

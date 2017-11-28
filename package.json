@@ -1,6 +1,10 @@
 {
   "name": "react-express-auth-starter",
   "version": "1.0.0",
+  "engines": {
+    "node": "8.4.0",
+    "npm": "5.5.1"
+  },
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -13,6 +17,7 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
+    "concat-stream": "^1.6.0",
     "cors": "^2.8.4",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",

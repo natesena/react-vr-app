@@ -1,0 +1,58 @@
+Object.defineProperty(exports,"__esModule",{value:true});var _react=require("react");var _react2=babelHelpers.interopRequireDefault(_react);
+var _reactVr=require("react-vr");var
+
+
+
+
+
+
+FocusButton=function(_React$Component){babelHelpers.inherits(FocusButton,_React$Component);
+//text is what is shown as text
+function FocusButton(props){babelHelpers.classCallCheck(this,FocusButton);var _this=babelHelpers.possibleConstructorReturn(this,(FocusButton.__proto__||Object.getPrototypeOf(FocusButton)).call(this,
+props));
+_this.state={
+color:'#FF0000',
+focused:props.focused};return _this;
+
+}babelHelpers.createClass(FocusButton,[{key:"focus",value:function focus()
+
+{
+this.setState({
+color:this.state.focused?'#FF0000':'#00FF00',
+focused:!this.state.focused},
+function(){
+//console.log('placeholder clicked', this.state.focused)
+});
+}},{key:"buttonRedirect",value:function buttonRedirect()
+{
+console.log('focus button '+this.props.value+' triggered');
+this.props.onFocusButtonClick(this.props.viewLink);
+}},{key:"render",value:function render()
+
+
+{
+return(
+_react2.default.createElement(_reactVr.View,{onEnter:this.focus.bind(this),onExit:this.focus.bind(this)},
+_react2.default.createElement(_reactVr.VrButton,{onClick:this.buttonRedirect.bind(this)},
+_react2.default.createElement(_reactVr.Text,{
+style:{
+margin:0.05,
+backgroundColor:""+this.state.color,
+fontSize:0.2,
+fontWeight:"400",
+layoutOrigin:[0.5,0.5],
+paddingLeft:0.2,
+paddingRight:0.2,
+textAlign:'center',
+textAlignVertical:'center',
+transform:[{translate:[0,0,-3]}]}},
+
+this.props.value))));
+
+
+
+
+}}]);return FocusButton;}(_react2.default.Component);exports.default=FocusButton;
+;
+
+_reactVr.AppRegistry.registerComponent('focusButton',function(){return focusButton;});

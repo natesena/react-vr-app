@@ -1,0 +1,131 @@
+Object.defineProperty(exports,"__esModule",{value:true});var _react=require("react");var _react2=babelHelpers.interopRequireDefault(_react);
+var _reactVr=require("react-vr");
+
+
+
+
+
+
+
+
+var _textInput=require("../js/vr_components/textInput.js");var _textInput2=babelHelpers.interopRequireDefault(_textInput);
+var _axios=require("axios");var _axios2=babelHelpers.interopRequireDefault(_axios);//import axios from 'axios'//---------------------------
+var
+AddText=function(_React$Component){babelHelpers.inherits(AddText,_React$Component);function AddText(){var _ref;var _temp,_this,_ret;babelHelpers.classCallCheck(this,AddText);for(var _len=arguments.length,args=Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}return _ret=(_temp=(_this=babelHelpers.possibleConstructorReturn(this,(_ref=AddText.__proto__||Object.getPrototypeOf(AddText)).call.apply(_ref,[this].concat(args))),_this),_this.
+state={
+lasthome:_this.props.getHome,
+fields:{
+text:'Text: ',
+xCoordinate:'X Coordinate: ',
+yCoordinate:'Y Coordinate: ',
+zCoordinate:'Z Coordinate: '}},_temp),babelHelpers.possibleConstructorReturn(_this,_ret);}babelHelpers.createClass(AddText,[{key:"addTextSubmit",value:function addTextSubmit()
+
+
+{var _this2=this;
+//console.log('Addtext: tried to submit')
+//console.log('addtext submit fields',this.state.fields)
+if(typeof this.state.fields.translateX!=='number'||typeof this.state.fields.translateY!=='number'||typeof this.state.fields.translateZ!=='number'){
+console.log('One or more coordinate inputs are not of type number');
+}
+
+//console.log('addTextSubmits input tests passed')
+
+//send post request with vrText info
+//need current id of home we are on from state
+var fields=babelHelpers.extends({},
+this.state.fields,{
+homeID:this.state.lasthome,
+posterID:this.props.user._id});
+
+console.log('ADDTEXT posting new text with this data',fields);
+(0,_axios2.default)({method:'POST',url:'/api/vrTexts',data:fields}).
+then(function(res){
+//console.log('Fields from AddText Post Request', fields)
+//console.log('ADD Text Post Response', res)
+//redirect to home where we posted it, with last homeowner owning view
+_this2.props.changeView("/home/"+_this2.state.lasthome,_this2.props.homeOwner);
+});
+
+}},{key:"onInputChange",value:function onInputChange(
+
+field,value){
+//console.log('add text input change field:', field)
+//console.log('addtext typeof field:',typeof(field))
+var valIsNum=!isNaN(parseInt(value));
+if(valIsNum){
+console.log('ADD TEXT field text is a number: ',value);
+value=parseInt(value);
+console.log('ADDText parseint to: ',value);
+}
+//need to make sure inputs are parsed as numbers if they are numbers
+if(field==='text'||valIsNum&&field!=='text'){
+this.setState({
+fields:babelHelpers.extends({},
+this.state.fields,babelHelpers.defineProperty({},
+field,value))});
+
+
+}else
+{
+console.log('TextInput expected a Number and a String was Sent Instead');
+}
+}},{key:"render",value:function render()
+
+{
+console.log(this.state.fields);
+return(
+_react2.default.createElement(_reactVr.View,null,
+
+
+_react2.default.createElement(_reactVr.Pano,{source:{uri:'https://farm8.static.flickr.com/7536/27336477654_8e7c705cf7_b.jpg'}}),
+_react2.default.createElement(_reactVr.Text,{
+style:{
+backgroundColor:'#777879',
+fontSize:0.2,
+fontWeight:'400',
+layoutOrigin:[0.5,0.5],
+paddingLeft:0.2,
+paddingRight:0.2,
+textAlign:'center',
+textAlignVertical:'center',
+transform:[{translate:[0,0,-3]}]}},"VR Text Submission"),
+
+
+
+_react2.default.createElement(_reactVr.Text,{
+style:{
+backgroundColor:'#777879',
+fontSize:0.2,
+fontWeight:'400',
+layoutOrigin:[0.5,0.5],
+paddingLeft:0.2,
+paddingRight:0.2,
+textAlign:'center',
+textAlignVertical:'center',
+transform:[{translate:[0,0,-3]}]}},"It is best to use numbers less than 20"),
+
+
+
+_react2.default.createElement(_textInput2.default,{name:"text",onChange:this.onInputChange.bind(this),value:this.state.fields.text,placeHolder:'Text: ',focused:false,type:'text'}),
+_react2.default.createElement(_textInput2.default,{name:"xCoordinate",onChange:this.onInputChange.bind(this),value:this.state.fields.xCoordinate,placeHolder:'X Coordinate: ',focused:false,type:'number'}),
+_react2.default.createElement(_textInput2.default,{name:"yCoordinate",onChange:this.onInputChange.bind(this),value:this.state.fields.yCoordinate,placeHolder:'Y Coordinate: ',focused:false,type:'number'}),
+_react2.default.createElement(_textInput2.default,{name:"zCoordinate",onChange:this.onInputChange.bind(this),value:this.state.fields.zCoordinate,placeHolder:'Z Coordinate: ',focused:false,type:'number'}),
+_react2.default.createElement(_reactVr.VrButton,{onClick:this.addTextSubmit.bind(this)},
+_react2.default.createElement(_reactVr.Text,{
+style:{
+backgroundColor:'#777879',
+fontSize:0.2,
+fontWeight:'400',
+layoutOrigin:[0.5,0.5],
+paddingLeft:0.2,
+paddingRight:0.2,
+textAlign:'center',
+textAlignVertical:'center',
+transform:[{translate:[0,0,-3]}]}},"Submit"))));
+
+
+
+
+
+
+}}]);return AddText;}(_react2.default.Component);exports.default=AddText;

@@ -26,12 +26,10 @@ In the future, this idea can be expanded to allow people to explore their relati
 - HTML
 
 ### Areas of Future Focus
-- Firstly, I want to focus on making a login view separate from the sign up view, where JWT tokens are recognized
 - Some edits need to be made to the Password Inputs so that they are not easy to see
 - My solution for working around the lack of browser history should both hijack the browser url and forward, back history calls
 - Inputs for VR Text Coordinates should be more strict
 - Adding ability to work with copy/paste to handle links
-- Adding mobility to each scene
 - allowing users to upload more models, images, etc.
 - Allowing users to change the pano of each scene
 

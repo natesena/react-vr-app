@@ -1,0 +1,251 @@
+Object.defineProperty(exports,"__esModule",{value:true});
+var _react=require("react");var _react2=babelHelpers.interopRequireDefault(_react);
+var _reactVr=require("react-vr");
+
+
+
+
+
+
+
+
+
+
+var _clientAuth=require("../js/clientAuth.js");var _clientAuth2=babelHelpers.interopRequireDefault(_clientAuth);
+
+
+var _SignUp=require("./SignUp.js");var _SignUp2=babelHelpers.interopRequireDefault(_SignUp);
+var _Home=require("./Home.js");var _Home2=babelHelpers.interopRequireDefault(_Home);
+var _AddText=require("./AddText.js");var _AddText2=babelHelpers.interopRequireDefault(_AddText);
+var _Login=require("./Login.js");var _Login2=babelHelpers.interopRequireDefault(_Login);//self-produced views
+
+var History=_reactVr.NativeModules.History;
+// 
+//state begins with login and no user as we update user once we recognize a JWT, must keep track of every view for conditional rendering, viewOwner represents who owns the world we are in
+//React-VR Standard Code
+var App=function(_React$Component){babelHelpers.inherits(App,_React$Component);function App(){var _ref;var _temp,_this,_ret;babelHelpers.classCallCheck(this,App);for(var _len=arguments.length,args=Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}return _ret=(_temp=(_this=babelHelpers.possibleConstructorReturn(this,(_ref=App.__proto__||Object.getPrototypeOf(App)).call.apply(_ref,[this].concat(args))),_this),_this.state={
+history:[['login']],
+currentHistoryIndex:0,
+user:null,
+view:'login',
+viewOwner:null,
+location:{
+x:0,
+y:0,
+z:0},
+
+rotation:[0,0,0]
+
+//format address takes the string from out changeView function and returns an array of all the necessary data that would typically be in URLs for RESTful Routes
+},_temp),babelHelpers.possibleConstructorReturn(_this,_ret);}babelHelpers.createClass(App,[{key:"formatAddress",value:function formatAddress(string){
+var stringARR=string.split('');
+var splits=[];
+var currentSplit='';
+for(var i=0;i<stringARR.length;i++){
+if(stringARR[i]!=='/'){
+currentSplit+=stringARR[i];
+if(i==stringARR.length-1){
+splits.push(currentSplit);
+}
+}else
+{
+if(currentSplit){
+splits.push(currentSplit);
+}
+currentSplit='';
+}
+}
+return splits;
+}
+//Go back will be used to change the view to go backwards in history
+},{key:"goBack",value:function goBack(){
+//hijack history API
+console.log('tried to go back');
+}
+//Go forwards will be used to change the view to go forwards in history
+},{key:"goForwards",value:function goForwards(){
+
+}//hijack history API
+//------------------------------------------------------
+},{key:"componentDidMount",value:function componentDidMount()
+{var _this2=this;
+console.log('Component MOunt Head Rotation: ',_reactVr.VrHeadModel.rotation());
+this.setState({
+user:_clientAuth2.default.getCurrentUser(),
+rotation:_reactVr.VrHeadModel.rotation()},
+function(){
+History.pushState(_this2.state,"Login","/login");
+});
+
+}
+//not yet implemented
+},{key:"onLoginSuccess",value:function onLoginSuccess(user){
+this.setState({
+user:_clientAuth2.default.getCurrentUser()});
+
+}
+//not yet implemented
+},{key:"logOut",value:function logOut(){
+_clientAuth2.default.logOut();
+this.setState({user:null});
+}
+
+//should return id of last home we were at
+},{key:"getLastHome",value:function getLastHome(){
+for(var i=this.state.history.length-1;i>=0;i--){
+console.log('APP, getlasthome history check:',this.state.history[i]);
+if(this.state.history[i][0]=='home'){
+console.log("App Last Home",this.state.history[i][1]);
+return this.state.history[i][1];
+}
+}
+console.log('APP,getLastHome, no last user was found');
+return this.state.user._id;
+
+}
+//changeView changes the current view for the app to render
+},{key:"changeView",value:function changeView(link,newViewOwner){var _this3=this;
+//thenewViewOwner is the user who owns the view we are navigating to
+//if a user just signed up, the new view owner is also the owner 
+console.log('tried to change view within APP');
+//console.log("History", History)
+var linkSplits=this.formatAddress(link);
+console.log('linkSplits',linkSplits);
+//need to handle currentHistoryIndex changing with backwards, forwards
+//if there is no user set, then we propbably just signed in and the newviewowner passed in would be the new user
+this.setState({
+history:[].concat(babelHelpers.toConsumableArray(this.state.history),[linkSplits]),
+currentHistoryIndex:this.state.currentHistoryIndex+1,
+view:linkSplits[0],
+user:this.state.user?this.state.user:newViewOwner,
+viewOwner:newViewOwner,
+location:{
+x:0,
+y:0,
+z:0},
+
+rotation:[0,0,0]},
+function(){
+History.pushState(_this3.state,_this3.state.newViewOwner+linkSplits[0],link);
+});
+//if navigating to a new user's profile
+}},{key:"onInput",value:function onInput(
+evt){
+if(evt.nativeEvent.inputEvent.type=='KeyboardInputEvent'){
+//if key is wasd or arrows, begin moving!
+var theKeyCode=evt.nativeEvent.inputEvent.keyCode;
+var key=evt.nativeEvent.inputEvent.key;
+var eventType=evt.nativeEvent.inputEvent.eventType;
+
+//console.log('evt key', key)
+
+if(key=='w'){
+//KEYDOWN VS KEYUP
+eventType=='keydown'?this.handleMovement('w'):null;
+}
+if(key=='s'){
+eventType=='keydown'?this.handleMovement('s'):null;
+}
+if(key=='a'){
+eventType=='keydown'?this.handleMovement('a'):null;
+}
+if(key=='d'){
+eventType=='keydown'?this.handleMovement('d'):null;
+}
+if(key=='ArrowLeft'){
+eventType=='keydown'?this.handleMovement('ArrowLeft'):null;
+}
+if(key=='ArrowRight'){
+eventType=='keydown'?this.handleMovement('ArrowRight'):null;
+}
+//make movement in a direction true if that key is down
+
+}
+}},{key:"handleMovement",value:function handleMovement(
+direction){
+//currenRotation gets the rotation of the user ie, the rotation of the view as they have pulled it on desktop of moved on mobile
+var currentRotation=_reactVr.VrHeadModel.rotation();
+//these should only be used for calculating during
+var currentRotationX=currentRotation[0];
+var currentRotationY=currentRotation[1];
+var currentRotationZ=currentRotation[2];
+
+//these rotations are the normal ones for spinning
+var rotationX=this.state.rotation[0];
+var rotationY=this.state.rotation[1];
+var rotationZ=this.state.rotation[2];
+
+var speed=0.1;
+var rotationSpeed=Math.PI/5;
+
+var dx=0;
+var dy=0;
+var dz=0;
+var ry=0;
+
+if(direction=='w'){
+dz=-1;
+}
+if(direction=='s'){
+dz=1;
+}
+if(direction=='a'){
+dx=-1;
+}
+if(direction=='d'){
+dx=1;
+}
+if(direction=='ArrowLeft'){
+ry=-1;
+}
+if(direction=='ArrowRight'){
+ry=1;
+}
+
+console.log('App Movement Handler '," speed: ",speed," rotationSpeed: ",rotationSpeed," dx: ",dx," dy: ",dy," dz: ",dz," ry: ",ry);
+console.log("AppMovement Handler 2 "," currentrotationx: ",currentRotationX," currentrotationY: ",currentRotationY," currentroationZ: ",currentRotationZ," rotationX: ",rotationX," rotationY: ",rotationY," rotationZ: ",rotationZ);
+//one set state should handle both forward and lateral movement, currently it does not
+this.setState({
+location:{
+x:this.state.location.x+dx*speed,
+y:this.state.location.y+dy*speed,
+z:this.state.location.z+dz*speed},
+
+rotation:[rotationX,rotationY-ry*rotationSpeed,rotationZ]});
+
+}},{key:"render",value:function render()
+
+
+{
+//should i be getting the last home or last homeowner
+var lastHome;
+//when you begin, user is null, so this is for error handling
+if(this.state.user){
+lastHome=this.getLastHome();
+}
+var rotationY=this.state.rotation[1];
+var sceneStyle={transform:[{translateX:this.state.location.x},{translateY:this.state.location.y},{translateZ:this.state.location.z},{rotateY:rotationY}]
+//console.log(lastHome) 
+};console.log("new state in APP:",this.state);
+if(this.state.view=='signup'){
+return(
+_react2.default.createElement(_reactVr.Scene,{style:sceneStyle,onInput:this.onInput.bind(this)},_react2.default.createElement(_SignUp2.default,{changeView:this.changeView.bind(this)})));
+
+}else
+if(this.state.view=='home'){
+return(
+_react2.default.createElement(_reactVr.Scene,{style:sceneStyle,onInput:this.onInput.bind(this)},_react2.default.createElement(_Home2.default,{user:this.state.user,homeOwner:this.state.viewOwner,changeView:this.changeView.bind(this),getHome:lastHome})));
+
+}else
+if(this.state.view=='add'){
+return(
+_react2.default.createElement(_reactVr.Scene,{style:sceneStyle,onInput:this.onInput.bind(this)},_react2.default.createElement(_AddText2.default,{user:this.state.user,homeOwner:this.state.viewOwner,changeView:this.changeView.bind(this),getHome:lastHome})));
+
+}else
+if(this.state.view=='login'){
+return(
+_react2.default.createElement(_reactVr.Scene,{style:sceneStyle,onInput:this.onInput.bind(this)},_react2.default.createElement(_Login2.default,{changeView:this.changeView.bind(this)})));
+
+}
+}}]);return App;}(_react2.default.Component);exports.default=App;
+;

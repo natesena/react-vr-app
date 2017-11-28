@@ -1,0 +1,106 @@
+Object.defineProperty(exports,"__esModule",{value:true});var _react=require("react");var _react2=babelHelpers.interopRequireDefault(_react);
+var _reactVr=require("react-vr");var
+
+
+
+
+
+
+TextInput=function(_React$Component){babelHelpers.inherits(TextInput,_React$Component);
+//text is what is shown as text
+function TextInput(props){babelHelpers.classCallCheck(this,TextInput);var _this=babelHelpers.possibleConstructorReturn(this,(TextInput.__proto__||Object.getPrototypeOf(TextInput)).call(this,
+props));
+_this.state={
+text:props.placeHolder,
+color:'#FF0000',
+focused:props.focused};return _this;
+
+}babelHelpers.createClass(TextInput,[{key:"focus",value:function focus()
+
+{
+this.setState({
+color:this.state.focused?'#FF0000':'#00FF00',
+focused:!this.state.focused},
+function(){
+//console.log('placeholder clicked', this.state.focused)
+});
+}},{key:"fieldClick",value:function fieldClick()
+{
+console.log('clicked textInput');
+}},{key:"keyPressed",value:function keyPressed(
+evt){var _this2=this;
+//console.log('-------------------------------------newkeypressed--------------------------------------')
+//keycode of pressedKey
+var theKeyCode=evt.nativeEvent.inputEvent.keyCode;
+//console.log('textInput keycode:', theKeyCode)
+
+//actual key that was pressed. Could be non-alphanumeric
+var key=evt.nativeEvent.inputEvent.key;
+//console.log('textInput key:', key)
+
+//if delete key was pressed
+if(theKeyCode==8){
+var currentText=this.state.text.toString().split('');
+//delete letter from array
+currentText.pop();
+var joinedLess=currentText.join('');
+//if currenttext is empty, show placeholder
+this.setState({
+//if value would be empty or text == placeholder make it placeholder, otherwise make it popped off
+text:!joinedLess||this.state.text==this.props.placeHolder?this.props.placeHolder:joinedLess},
+
+function(){
+//console.log('delete-end-state', this.state)
+_this2.props.onChange(_this2.props.name,_this2.state.text);
+});
+}else
+{
+//let any key be added shown
+//console.log('textInput, formatting key press as normal text')
+//if key is not shift
+if(theKeyCode!==16){
+//if password a star should be shown but login.js should receive true text
+this.setState({
+text:this.state.text==this.props.placeHolder?key:this.state.text+key},
+function(){
+_this2.props.onChange(_this2.props.name,_this2.state.text);
+//console.log(this.state.text)
+console.log('key pressed','text input state',_this2.state);
+});
+}
+
+}
+}},{key:"render",value:function render()
+
+{var _this3=this;
+return(
+_react2.default.createElement(_reactVr.View,{onInput:function onInput(evt){
+//only register a typing event on keyup as to remove duplicates
+if(evt.nativeEvent.inputEvent.type=='KeyboardInputEvent'&&evt.nativeEvent.inputEvent.eventType=="keyup"){
+//console.log(evt.nativeEvent)
+_this3.keyPressed(evt);
+}
+}},
+_react2.default.createElement(_reactVr.VrButton,{onEnter:this.focus.bind(this),onExit:this.focus.bind(this),onClick:this.fieldClick.bind(this)},
+_react2.default.createElement(_reactVr.Text,{
+style:{
+margin:0.05,
+backgroundColor:""+this.state.color,
+fontSize:0.2,
+fontWeight:"400",
+layoutOrigin:[0.5,0.5],
+paddingLeft:0.2,
+paddingRight:0.2,
+textAlign:'center',
+textAlignVertical:'center',
+transform:[{translate:[0,0,-3]}]}},
+
+this.props.value))));
+
+
+
+
+}}]);return TextInput;}(_react2.default.Component);exports.default=TextInput;
+;
+
+_reactVr.AppRegistry.registerComponent('textInput',function(){return textInput;});

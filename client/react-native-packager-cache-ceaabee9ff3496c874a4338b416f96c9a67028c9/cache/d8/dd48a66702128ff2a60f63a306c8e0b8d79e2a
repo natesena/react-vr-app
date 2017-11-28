@@ -1,0 +1,142 @@
+Object.defineProperty(exports,"__esModule",{value:true});var _react=require("react");var _react2=babelHelpers.interopRequireDefault(_react);
+var _reactVr=require("react-vr");
+
+
+
+
+
+
+
+
+var _textInput=require("../js/vr_components/textInput.js");var _textInput2=babelHelpers.interopRequireDefault(_textInput);
+var _SimpleText=require("../js/vr_components/SimpleText.js");var _SimpleText2=babelHelpers.interopRequireDefault(_SimpleText);
+
+var _clientAuth=require("../js/clientAuth.js");var _clientAuth2=babelHelpers.interopRequireDefault(_clientAuth);var
+
+SignUp=function(_React$Component){babelHelpers.inherits(SignUp,_React$Component);function SignUp(){var _ref;var _temp,_this,_ret;babelHelpers.classCallCheck(this,SignUp);for(var _len=arguments.length,args=Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}return _ret=(_temp=(_this=babelHelpers.possibleConstructorReturn(this,(_ref=SignUp.__proto__||Object.getPrototypeOf(SignUp)).call.apply(_ref,[this].concat(args))),_this),_this.
+state={
+fields:{
+username:'username: ',
+email:'email: ',
+password:'password: ',
+confirmPassword:'confirm password: ',
+passwordStars:'password: ',
+confirmPasswordStars:'confirm password: '},
+
+errors:[]
+
+//usernames should pass some simple checks
+},_temp),babelHelpers.possibleConstructorReturn(_this,_ret);}babelHelpers.createClass(SignUp,[{key:"usernamePasses",value:function usernamePasses(){
+var username=this.state.fields.username;
+var usernamePassesTest=true;
+//username must be alphanumeric with no spaces
+for(var i=0;i<username.length;i++){
+//console.log('username.charCodeAt(i): ', username.charCodeAt(i))
+if(!(username.charCodeAt(i)>47&&username.charCodeAt(i)<58)&&// numeric (0-9)
+!(username.charCodeAt(i)>64&&username.charCodeAt(i)<91)&&// upper alpha (A-Z)
+!(username.charCodeAt(i)>96&&username.charCodeAt(i)<123)){// lower alpha (a-z)
+usernamePassesTest=false;
+console.log('login username check contains non alphanumeric');
+}
+}
+return usernamePassesTest;
+}
+//make sure that the login form is not blank
+},{key:"loginFormIsFilledOut",value:function loginFormIsFilledOut(){
+if(this.state.fields.username!=='username: '&&this.state.fields.email!=='email: '&&this.state.fields.password!=='password: '&&this.state.fields.confirmPassword!=='confirm password: '){
+return true;
+}
+return false;
+}
+//
+},{key:"emailPasses",value:function emailPasses(){
+
+}},{key:"submit",value:function submit()
+
+{var _this2=this;
+//console.log('Tried to submit')
+var formIsFilled=this.loginFormIsFilledOut();
+var userNameIsAlphanumeric=this.usernamePasses();
+var passwordsMatch=this.state.fields.password==this.state.fields.confirmPassword;
+
+if(formIsFilled&&userNameIsAlphanumeric&&passwordsMatch){
+var fields={
+"username":this.state.fields.username,
+"email":this.state.fields.email,
+"password":this.state.fields.password};
+
+_clientAuth2.default.signUp(fields).then(function(user){
+console.log('user',user);
+if(user){
+//this.props.onSignUpSuccess(user)
+console.log('changing view within login.js submit');
+//the user we would typically pass is the viewOwner
+_this2.props.changeView("/home/"+user._id,user);
+}
+});
+}else
+{
+//throw error for each error
+var newErrors=[];
+formIsFilled?null:newErrors.push('fill out the whole form');
+userNameIsAlphanumeric?null:newErrors.push('username is not alphanumeric');
+passwordsMatch?null:newErrors.push('passwords do not match');
+if(newErrors){
+this.throwError(newErrors);
+}
+
+}
+}
+//throwError shows errors above the singup form so the user knows what mistakes they made
+},{key:"throwError",value:function throwError(newerrors){
+this.setState({
+errors:[].concat(babelHelpers.toConsumableArray(newerrors))});
+
+}},{key:"onInputChange",value:function onInputChange(
+
+field,value){var _this3=this;
+//console.log('login on inputchange field and value: ', field, value)
+this.setState({
+fields:babelHelpers.extends({},
+this.state.fields,babelHelpers.defineProperty({},
+field,value))},
+
+function(){
+if(field=='username'){
+_this3.usernamePasses()?_this3.throwError([]):_this3.throwError(['username is not alphanumeric']);
+}
+});
+
+}},{key:"render",value:function render()
+
+{
+//console.log(this.state.fields)
+return(
+_react2.default.createElement(_reactVr.View,null,
+
+
+_react2.default.createElement(_reactVr.Pano,{source:{uri:'https://farm8.static.flickr.com/7536/27336477654_8e7c705cf7_b.jpg'}}),
+_react2.default.createElement(_reactVr.View,null,
+_react2.default.createElement(_reactVr.View,{style:{}},
+
+
+this.state.errors.map(function(err){
+return(
+_react2.default.createElement(_SimpleText2.default,{value:err}));
+
+})),
+
+_react2.default.createElement(_reactVr.View,null,
+_react2.default.createElement(_textInput2.default,{name:"username",onChange:this.onInputChange.bind(this),value:this.state.fields.username,placeHolder:'username: ',focused:false,type:'text'}),
+_react2.default.createElement(_textInput2.default,{name:"email",onChange:this.onInputChange.bind(this),value:this.state.fields.email,placeHolder:'email: ',focused:false,type:'email'}),
+_react2.default.createElement(_textInput2.default,{name:"password",onChange:this.onInputChange.bind(this),value:this.state.fields.password,placeHolder:'password: ',focused:false,type:'password'}),
+_react2.default.createElement(_textInput2.default,{name:"confirmPassword",onChange:this.onInputChange.bind(this),value:this.state.fields.confirmPassword,placeHolder:'confirm password: ',focused:false,type:'password'}),
+_react2.default.createElement(_reactVr.VrButton,{onClick:this.submit.bind(this)},
+_react2.default.createElement(_SimpleText2.default,{value:"Submit"}))))));
+
+
+
+
+
+}}]);return SignUp;}(_react2.default.Component);//my own components
+exports.default=SignUp;

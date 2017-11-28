@@ -1,0 +1,133 @@
+Object.defineProperty(exports,"__esModule",{value:true});var _react=require("react");var _react2=babelHelpers.interopRequireDefault(_react);
+var _reactVr=require("react-vr");
+
+
+
+
+
+
+
+var _focusButton=require("../js/vr_components/focusButton.js");var _focusButton2=babelHelpers.interopRequireDefault(_focusButton);
+var _textInput=require("../js/vr_components/textInput.js");var _textInput2=babelHelpers.interopRequireDefault(_textInput);
+
+var _axios=require("axios");var _axios2=babelHelpers.interopRequireDefault(_axios);var
+
+Home=function(_React$Component){babelHelpers.inherits(Home,_React$Component);function Home(){var _ref;var _temp,_this,_ret;babelHelpers.classCallCheck(this,Home);for(var _len=arguments.length,args=Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}return _ret=(_temp=(_this=babelHelpers.possibleConstructorReturn(this,(_ref=Home.__proto__||Object.getPrototypeOf(Home)).call.apply(_ref,[this].concat(args))),_this),_this.
+state={
+lasthome:_this.props.getHome,
+fields:{
+searchQuery:'search by username: '},
+
+vrTexts:[]},_temp),babelHelpers.possibleConstructorReturn(_this,_ret);}babelHelpers.createClass(Home,[{key:"componentDidMount",value:function componentDidMount()
+
+{
+this.grabVRTexts();
+}},{key:"grabVRTexts",value:function grabVRTexts()
+{var _this2=this;
+//texts are found by their homeID, which should be the lasthome at the time of post
+console.log('Home, tried to fetch homeOwnersVRtexts');
+(0,_axios2.default)({method:'GET',url:"/api/vrTexts/"+this.props.homeOwner._id}).
+then(function(res){
+console.log('Home Get Requests Response',res);
+//change state, then re render with new ones shown
+_this2.setState({
+vrTexts:res.data},
+console.log('Changed Home State to include requested VRTexts',res.data));
+});
+}},{key:"redirectFromHomeView",value:function redirectFromHomeView(
+link){
+console.log('tried to redirect from home view');
+console.log('Home Button redirect location link:',link||'no link provided');
+//want to provide link of this particular home which should be the id of the home owner
+this.props.changeView(link+'/'+this.props.user._id,this.props.homeOwner);
+}},{key:"onInputChange",value:function onInputChange(
+
+field,value){
+this.setState({
+fields:babelHelpers.extends({},
+this.state.fields,babelHelpers.defineProperty({},
+field,value))});
+
+
+}},{key:"usernameSubmit",value:function usernameSubmit()
+
+{var _this3=this;
+console.log('tried to username submit');
+//post arequest looking for if there is someone in the database witht that username
+//could throw error if we know the query cant be a username
+(0,_axios2.default)({method:'GET',url:"/api/users/"+this.state.fields.searchQuery}).
+then(function(res){
+console.log('username submission response: ',res);
+//want to navigate to /home/${res.data._id}
+console.log('username submit link','/home/'+res.data[0]._id);
+_this3.props.changeView('/home/'+res.data[0]._id,res.data[0]);
+_this3.grabVRTexts();
+});
+}},{key:"render",value:function render()
+
+{
+console.log('New Home State: ',this.state);
+return(
+_react2.default.createElement(_reactVr.View,null,
+_react2.default.createElement(_reactVr.View,null,
+this.state.vrTexts.map(function(vrText){
+return(
+_react2.default.createElement(_reactVr.Text,{
+style:{
+backgroundColor:'#777879',
+fontSize:0.2,
+fontWeight:'400',
+layoutOrigin:[0.5,0.5],
+paddingLeft:0.2,
+paddingRight:0.2,
+textAlign:'center',
+textAlignVertical:'center',
+transform:[{translate:[vrText.xCoordinate||0,vrText.yCoordinate||-0.1,vrText.xCoordinate||-3]}]}},
+
+vrText.text));
+
+
+})),
+
+
+_react2.default.createElement(_reactVr.Pano,{source:{uri:'https://c1.staticflickr.com/4/3161/5864327856_e6c797d614_b.jpg'}}),
+_react2.default.createElement(_reactVr.View,null,
+_react2.default.createElement(_reactVr.Text,{
+style:{
+backgroundColor:'#777879',
+fontSize:0.2,
+fontWeight:'400',
+layoutOrigin:[0.5,0.5],
+paddingLeft:0.2,
+paddingRight:0.2,
+textAlign:'center',
+textAlignVertical:'center',
+transform:[{translate:[0,0,-3]}]}},
+
+this.props.user==this.props.homeOwner?"Welcome home "+this.props.user.username:"Welcome to "+this.props.homeOwner.username+"'s home")),
+
+
+_react2.default.createElement(_reactVr.View,null,
+_react2.default.createElement(_textInput2.default,{name:"searchQuery",onChange:this.onInputChange.bind(this),value:this.state.fields.searchQuery,placeHolder:'search by username: ',focused:false,type:'text'}),
+_react2.default.createElement(_reactVr.VrButton,{onClick:this.usernameSubmit.bind(this)},
+_react2.default.createElement(_reactVr.Text,{
+style:{
+backgroundColor:'#777879',
+fontSize:0.2,
+fontWeight:'400',
+layoutOrigin:[0.5,0.5],
+paddingLeft:0.2,
+paddingRight:0.2,
+textAlign:'center',
+textAlignVertical:'center',
+transform:[{translate:[0,0,-3]}]}},"Submit")),
+
+
+
+
+_react2.default.createElement(_focusButton2.default,{value:'Edit/Delete Your Info',onFocusButtonClick:this.redirectFromHomeView.bind(this),viewLink:'/edit'}),
+_react2.default.createElement(_focusButton2.default,{value:'Add Something',onFocusButtonClick:this.redirectFromHomeView.bind(this),viewLink:'/add'}))));
+
+
+
+}}]);return Home;}(_react2.default.Component);exports.default=Home;
